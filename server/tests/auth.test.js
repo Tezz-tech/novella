@@ -28,6 +28,7 @@ const newCustomer = (overrides = {}) => ({
   name: 'Amaka Okafor',
   email: `amaka+${Math.random().toString(36).slice(2, 8)}@example.com`,
   password: 'Pretty-pass1',
+  phone: '08012345678',
   ...overrides,
 });
 

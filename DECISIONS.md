@@ -246,3 +246,18 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
 - **Not verified here:** a real Paystack payment, sent emails (no SMTP), Cloudinary uploads (no keys), and
   the production deploy.
 - **Lint:** 0 errors and 7 fast-refresh warnings. These are files that export both a component and a helper.
+
+## WhatsApp instead of email
+
+- **No email to customers.** Order confirmation, status updates and password reset now go by WhatsApp.
+  Email code and SMTP settings are removed from the server, along with the `nodemailer` dependency.
+- **Owner alert:** every paid order sends `owner_new_order` to `OWNER_WHATSAPP_NUMBER`. It includes the order
+  number, buyer, total, items, delivery and any stock problem.
+- **Approved templates are required.** WhatsApp only allows store-started messages through approved templates.
+  The four templates and their parameters are in `docs/whatsapp-templates.md`. Until they are approved and the
+  Meta keys are set, messages are logged, not sent.
+- **Phone number is required at sign-up**, because password reset now goes to the WhatsApp number on the account.
+  Accounts created before this change may have no number, so they need the owner to reset them by hand.
+- **Staff invites** no longer send email. The temporary password is shown once to the owner who sends the invite.
+- Not built: sending WhatsApp free-form text, and WhatsApp replies from customers. These need a webhook and a
+  24-hour conversation window.

@@ -23,7 +23,7 @@ Paystack payments and Cloudinary images.
 
 - Node.js 20 or later (tested on Node 26)
 - A MongoDB database: a local instance, or a free MongoDB Atlas cluster
-- Optional, for the full flow: Paystack keys, Cloudinary, and an SMTP account
+- Optional, for the full flow: Paystack keys, Cloudinary, and a WhatsApp Business Cloud API account (see docs/whatsapp-templates.md)
 
 ## Setup
 
@@ -48,20 +48,20 @@ Change `SEED_ADMIN_PASSWORD` before you deploy, and use a real owner email.
 
 ### `server/.env`
 
-| Variable                                                               | Notes                                                                                  |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `PORT`                                                                 | API port, default 5000                                                                 |
-| `NODE_ENV`                                                             | `development`, `test` or `production`                                                  |
-| `MONGODB_URI`                                                          | Required. Atlas connection string or a local Mongo URL                                 |
-| `JWT_SECRET`                                                           | Required. At least 32 random characters                                                |
-| `JWT_EXPIRES_IN`                                                       | Session length, e.g. `7d`                                                              |
-| `CLIENT_URL`                                                           | Storefront origin. CORS and Paystack redirects use it. Example `http://localhost:5173` |
-| `CURRENCY`                                                             | `NGN`                                                                                  |
-| `PAYSTACK_SECRET_KEY`, `PAYSTACK_PUBLIC_KEY`                           | Test keys first (`sk_test_…`, `pk_test_…`)                                             |
-| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Needed for admin photo uploads                                                         |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM`        | Order and reset emails. Without SMTP, emails are logged instead                        |
-| `ADMIN_NOTIFY_EMAIL`                                                   | Where new paid orders are announced                                                    |
-| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`                              | The owner account created by `npm run seed`                                            |
+| Variable                                                               | Notes                                                                                                                                          |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PORT`                                                                 | API port, default 5000                                                                                                                         |
+| `NODE_ENV`                                                             | `development`, `test` or `production`                                                                                                          |
+| `MONGODB_URI`                                                          | Required. Atlas connection string or a local Mongo URL                                                                                         |
+| `JWT_SECRET`                                                           | Required. At least 32 random characters                                                                                                        |
+| `JWT_EXPIRES_IN`                                                       | Session length, e.g. `7d`                                                                                                                      |
+| `CLIENT_URL`                                                           | Storefront origin. CORS and Paystack redirects use it. Example `http://localhost:5173`                                                         |
+| `CURRENCY`                                                             | `NGN`                                                                                                                                          |
+| `PAYSTACK_SECRET_KEY`, `PAYSTACK_PUBLIC_KEY`                           | Test keys first (`sk_test_…`, `pk_test_…`)                                                                                                     |
+| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Needed for admin photo uploads                                                                                                                 |
+| `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`                    | WhatsApp Business Cloud API. Every order message goes by WhatsApp. Without them, messages are logged instead. See `docs/whatsapp-templates.md` |
+| `OWNER_WHATSAPP_NUMBER`                                                | Owner number (international format) that gets an alert for every paid order                                                                    |
+| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`                              | The owner account created by `npm run seed`                                                                                                    |
 
 Missing optional keys never stop the server. It logs which integrations are not set up yet.
 
@@ -143,6 +143,7 @@ After deploying:
   takes naira and converts at the API boundary.
 - The server recalculates every price, delivery fee and discount. The browser's amounts are ignored.
 - A paid status is set only after a Paystack check or a signed webhook.
+- Customers and the owner are messaged on WhatsApp only. No order email is sent.
 - Every admin change is written to the activity log with before and after values.
 - "Mark paid manually" is not built. It conflicts with the rule above and is listed in DECISIONS.md
   for a decision.

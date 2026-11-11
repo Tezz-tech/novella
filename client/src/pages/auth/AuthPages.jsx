@@ -119,7 +119,7 @@ export function LoginPage() {
 const registerSchema = z.object({
   name: z.string().trim().min(2, 'Enter your full name'),
   email: emailField,
-  phone: z.string().trim().max(20).optional(),
+  phone: z.string().trim().min(7, 'Enter the WhatsApp number on your account').max(20),
   password,
 });
 
@@ -180,7 +180,7 @@ export function RegisterPage() {
             {...register('email')}
           />
           <Input
-            label="Phone (optional)"
+            label="WhatsApp number"
             type="tel"
             autoComplete="tel"
             error={errors.phone?.message}
@@ -234,7 +234,8 @@ export function ForgotPasswordPage() {
         }
       >
         <p className="mb-6 text-sm text-rose-50/70">
-          Enter your email and we will send a reset link, valid for 30 minutes.
+          Enter the email on your account. We will send a reset link, valid for 30 minutes, to the
+          WhatsApp number saved on it.
         </p>
         <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate className="space-y-5">
           <Input

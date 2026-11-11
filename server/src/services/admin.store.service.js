@@ -15,11 +15,8 @@ import {
 } from '../models/index.js';
 import { HttpError } from '../utils/httpError.js';
 import { nairaToKobo } from '../utils/money.js';
-import { env } from '../config/env.js';
 import { escapeRegex, slugify } from '../utils/text.js';
 import { hashPassword } from '../utils/password.js';
-import { sendMail } from '../config/mailer.js';
-import { logger } from '../utils/logger.js';
 import { logFromRequest, snapshot } from './activity.service.js';
 import { confirmPayment } from './checkout.service.js';
 
@@ -542,16 +539,6 @@ export async function inviteStaff(req, { name, email, role }) {
     throw new HttpError(409, 'That email already has an account');
   const temp = crypto.randomBytes(9).toString('base64url');
   const user = await User.create({ name, email, role, passwordHash: await hashPassword(temp) });
-  try {
-    await sendMail({
-      to: user.email,
-      subject: 'You have been invited to Novelle Tech admin',
-      text: `Hi ${name}, you now have ${role} access to the Novelle Tech admin at ${env.CLIENT_URL}/admin/login. Temporary password: ${temp}. Please change it after you log in.`,
-      html: `<p>Hi ${name},</p><p>You now have <strong>${role}</strong> access to the Novelle Tech admin.</p><p>Temporary password: <code>${temp}</code></p><p>Please log in and change it.</p>`,
-    });
-  } catch (err) {
-    logger.error('Invite email failed', err);
-  }
   await logFromRequest(req, {
     action: 'invite',
     entity: 'staff',

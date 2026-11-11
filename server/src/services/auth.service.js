@@ -4,8 +4,7 @@ import { User } from '../models/index.js';
 import { env } from '../config/env.js';
 import { hashPassword, verifyPassword } from '../utils/password.js';
 import { HttpError } from '../utils/httpError.js';
-import { sendMail } from '../config/mailer.js';
-import { passwordResetEmail } from '../emails/templates.js';
+import { notifyPasswordReset } from './whatsapp.messages.js';
 import { logger } from '../utils/logger.js';
 import { isProd } from '../config/env.js';
 
@@ -88,11 +87,10 @@ export async function requestPasswordReset(email) {
   await user.save();
 
   const url = `${env.CLIENT_URL.replace(/\/$/, '')}/reset-password/${raw}`;
-  const mail = passwordResetEmail({ name: user.name, url });
   try {
-    await sendMail({ to: user.email, ...mail });
+    await notifyPasswordReset(user, url);
   } catch (err) {
-    logger.error('Password reset email failed', err);
+    logger.error('Password reset WhatsApp failed', err);
   }
   if (!isProd) logger.info(`Dev reset link for ${user.email}: ${url}`);
   return raw;

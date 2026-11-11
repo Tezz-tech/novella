@@ -343,3 +343,29 @@ describe('tracking, retry and stale orders', () => {
     expect(order.status).toBe('cancelled');
   });
 });
+
+describe('WhatsApp after payment', () => {
+  it('alerts the owner and confirms to the customer once a payment is confirmed', async () => {
+    const sent = [];
+    nock('https://graph.facebook.com')
+      .persist()
+      .post(/messages$/)
+      .reply((_uri, body) => {
+        sent.push(body);
+        return [200, { messages: [{ id: 'wamid.test' }] }];
+      });
+
+    const { res } = await placeOrder();
+    const ref = res.body.data.reference;
+    mockVerify(ref, { amount: res.body.data.amount });
+    await request(app).get(`/api/payments/verify/${ref}`);
+
+    const owner = sent.find((b) => b.template.name === 'owner_new_order');
+    expect(owner).toBeTruthy();
+    expect(owner.to).toBe('2348000000001');
+    expect(owner.template.components[0].parameters[0].text).toBe(res.body.data.orderNumber);
+
+    const customer = sent.find((b) => b.template.name === 'order_received');
+    expect(customer.to).toBe('2348012345678');
+  });
+});

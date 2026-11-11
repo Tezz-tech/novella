@@ -5,9 +5,8 @@ import { initializeTransaction, verifyTransaction } from './paystack.service.js'
 import { decrementVariant, refreshCombosContaining, refreshComboStock } from './stock.service.js';
 import { HttpError } from '../utils/httpError.js';
 import { logger } from '../utils/logger.js';
-import { sendMail } from '../config/mailer.js';
 import { env } from '../config/env.js';
-import { orderReceivedEmail, adminNewOrderEmail } from '../emails/templates.js';
+import { notifyOwnerNewOrder, notifyCustomerOrderReceived } from './whatsapp.messages.js';
 import { formatNaira } from '../utils/money.js';
 
 const UNPAID_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -249,16 +248,17 @@ async function deductStock(order) {
 }
 
 async function notifyPaid(order, issues) {
-  const jobs = [];
-  const customerMail = orderReceivedEmail({ order, money: formatNaira });
-  jobs.push(sendMail({ to: order.customer.email, ...customerMail }));
-  if (env.ADMIN_NOTIFY_EMAIL) {
-    const adminMail = adminNewOrderEmail({ order, money: formatNaira, stockIssues: issues });
-    jobs.push(sendMail({ to: env.ADMIN_NOTIFY_EMAIL, ...adminMail }));
+  // WhatsApp only: the customer gets the confirmation, the owner gets the alert.
+  const results = await Promise.allSettled([
+    notifyCustomerOrderReceived(order),
+    notifyOwnerNewOrder(order, issues),
+  ]);
+  for (const r of results) {
+    if (r.status === 'rejected')
+      logger.error('WhatsApp message failed for ' + order.orderNumber, r.reason);
   }
   if (issues.length)
     logger.warn(`Stock issue on paid order ${order.orderNumber}: ${issues.join('; ')}`);
-  await Promise.allSettled(jobs);
 }
 
 /**

@@ -5,8 +5,7 @@ import { formatNaira, nairaToKobo } from '../utils/money.js';
 import { logFromRequest, snapshot } from './activity.service.js';
 import { refundTransaction } from './paystack.service.js';
 import { restockVariant, refreshCombosContaining } from './stock.service.js';
-import { sendMail } from '../config/mailer.js';
-import { orderStatusEmail } from '../emails/templates.js';
+import { notifyCustomerStatus } from './whatsapp.messages.js';
 import { logger } from '../utils/logger.js';
 
 /** Allowed status moves (docs/01 order lifecycle). Anything else is refused. */
@@ -121,12 +120,11 @@ export async function getOrderAdmin(id) {
   return { ...order, refunds };
 }
 
-async function statusEmail(order, status, extra) {
+async function statusWhatsApp(order, status, extra) {
   try {
-    const mail = orderStatusEmail({ order, status, ...extra, money: formatNaira });
-    await sendMail({ to: order.customer.email, ...mail });
+    await notifyCustomerStatus(order, status, extra);
   } catch (err) {
-    logger.error(`Status email failed for ${order.orderNumber}`, err);
+    logger.error(`Status WhatsApp failed for ${order.orderNumber}`, err);
   }
 }
 
@@ -164,7 +162,7 @@ export async function changeStatus(
     before,
     after: { status, fulfilment: order.fulfilment },
   });
-  await statusEmail(order, status, { courier, trackingNumber, trackingUrl, note });
+  await statusWhatsApp(order, status, { courier, trackingNumber, trackingUrl, note });
   return getOrderAdmin(id);
 }
 
