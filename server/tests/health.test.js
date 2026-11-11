@@ -36,10 +36,11 @@ describe('error handling', () => {
     expect(res.body).toEqual({ success: false, message: 'Malformed JSON body' });
   });
 
-  it('only allows CORS from CLIENT_URL', async () => {
-    const res = await request(app).get('/api/health').set('Origin', 'http://evil.example');
-    // cors echoes the configured origin, never the requesting one.
-    expect(res.headers['access-control-allow-origin']).toBe(process.env.CLIENT_URL);
-    expect(res.headers['access-control-allow-origin']).not.toBe('http://evil.example');
+  it('only allows CORS from the configured storefront origins', async () => {
+    const allowed = process.env.CLIENT_URL.split(',')[0].trim();
+    const ok = await request(app).get('/api/health').set('Origin', allowed);
+    expect(ok.headers['access-control-allow-origin']).toBe(allowed);
+    const evil = await request(app).get('/api/health').set('Origin', 'http://evil.example');
+    expect(evil.headers['access-control-allow-origin']).toBeUndefined();
   });
 });

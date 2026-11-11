@@ -19,7 +19,22 @@ const schema = z.object({
   MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
   JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
   JWT_EXPIRES_IN: z.string().default('7d'),
-  CLIENT_URL: z.string().url('CLIENT_URL must be a full URL, e.g. http://localhost:5173'),
+  // One or more storefront origins, comma separated, e.g. http://localhost:5173,https://shop.example.com
+  CLIENT_URL: z
+    .string()
+    .min(1, 'CLIENT_URL is required')
+    .refine(
+      (v) =>
+        v.split(',').every((u) => {
+          try {
+            new URL(u.trim());
+            return true;
+          } catch {
+            return false;
+          }
+        }),
+      'CLIENT_URL must be full URLs, comma separated'
+    ),
   CURRENCY: z.literal('NGN').default('NGN'),
 
   PAYSTACK_SECRET_KEY: optionalString,
@@ -44,6 +59,9 @@ if (!parsed.success) {
 
 export const env = Object.freeze(parsed.data);
 export const isProd = env.NODE_ENV === 'production';
+
+// Storefront origins without trailing slashes. The first one is used for links (emails, sitemap, payment return).
+export const CLIENT_ORIGINS = env.CLIENT_URL.split(',').map((u) => u.trim().replace(/\/+$/, ''));
 
 // Optional integrations that are not configured yet. Logged once at startup so
 // the team sees what still needs keys. Nothing here blocks the server.

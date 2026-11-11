@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/index.js';
-import { env } from '../config/env.js';
+import { env, CLIENT_ORIGINS } from '../config/env.js';
 import { hashPassword, verifyPassword } from '../utils/password.js';
 import { HttpError } from '../utils/httpError.js';
 import { logger } from '../utils/logger.js';
@@ -32,10 +32,12 @@ export function verifyToken(token) {
   return jwt.verify(token, env.JWT_SECRET);
 }
 
+// In production the storefront and the API are on different domains, so the browser only sends
+// the session cookie cross-site when it is SameSite=None; Secure. Development stays on Lax.
 export const cookieOptions = () => ({
   httpOnly: true,
   secure: isProd,
-  sameSite: 'lax',
+  sameSite: isProd ? 'none' : 'lax',
   path: '/',
   maxAge: 7 * 24 * 60 * 60 * 1000,
 });
@@ -85,7 +87,7 @@ export async function requestPasswordReset(email) {
   user.resetTokenExpiresAt = new Date(Date.now() + RESET_TTL_MS);
   await user.save();
 
-  const url = `${env.CLIENT_URL.replace(/\/$/, '')}/reset-password/${raw}`;
+  const url = `${CLIENT_ORIGINS[0]}/reset-password/${raw}`;
   if (!isProd) logger.info(`Dev reset link for ${user.email}: ${url}`);
   return raw;
 }

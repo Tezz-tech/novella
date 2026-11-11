@@ -5,11 +5,11 @@ import { initializeTransaction, verifyTransaction } from './paystack.service.js'
 import { decrementVariant, refreshCombosContaining, refreshComboStock } from './stock.service.js';
 import { HttpError } from '../utils/httpError.js';
 import { logger } from '../utils/logger.js';
-import { env } from '../config/env.js';
+import { CLIENT_ORIGINS } from '../config/env.js';
 import { formatNaira } from '../utils/money.js';
 
 const UNPAID_WINDOW_MS = 24 * 60 * 60 * 1000;
-const clientBase = () => env.CLIENT_URL.replace(/\/$/, '');
+const clientBase = () => CLIENT_ORIGINS[0];
 
 /** NVT-YYMM-NNNNN, sequence reset each month (DECISIONS.md). Atomic via Counter. */
 export async function nextOrderNumber(date = new Date()) {

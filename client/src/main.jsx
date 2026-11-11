@@ -35,6 +35,18 @@ const queryClient = new QueryClient({
   },
 });
 
+// A new deploy changes the file names of built code. A tab still running the old code asks for files
+// that no longer exist: reload once to pick up the new version (guarded so it cannot loop).
+window.addEventListener('vite:preloadError', () => {
+  try {
+    if (sessionStorage.getItem('novelle-reloaded') === '1') return;
+    sessionStorage.setItem('novelle-reloaded', '1');
+  } catch {
+    /* storage blocked: reload anyway */
+  }
+  window.location.reload();
+});
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>

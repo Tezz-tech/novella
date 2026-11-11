@@ -1,5 +1,5 @@
 import { Product, Category } from '../models/index.js';
-import { env } from '../config/env.js';
+import { CLIENT_ORIGINS } from '../config/env.js';
 
 const escapeXml = (s) =>
   String(s).replace(
@@ -9,7 +9,7 @@ const escapeXml = (s) =>
 
 /** Sitemap of public storefront pages, built from live catalogue data. */
 export async function buildSitemap() {
-  const base = env.CLIENT_URL.replace(/\/$/, '');
+  const base = CLIENT_ORIGINS[0];
   const [products, categories] = await Promise.all([
     Product.find({ status: 'active' }).select('slug updatedAt').lean(),
     Category.find({ isActive: true }).select('slug updatedAt').lean(),
@@ -45,6 +45,6 @@ export async function buildSitemap() {
 
 /** robots.txt: allow the storefront, keep admin and the API out of search, point at the sitemap. */
 export function buildRobots() {
-  const base = env.CLIENT_URL.replace(/\/$/, '');
+  const base = CLIENT_ORIGINS[0];
   return `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /account\nDisallow: /checkout\nDisallow: /cart\nDisallow: /order\nDisallow: /api/\n\nSitemap: ${base}/sitemap.xml\n`;
 }
