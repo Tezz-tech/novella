@@ -1,3 +1,4 @@
+import CategoryIcon from '../brand/CategoryIcon.jsx';
 import { Link } from 'react-router-dom';
 import { useBrands, useCategories, useProducts, useSettings } from '../../lib/queries.js';
 import { Reveal, Stagger, StaggerItem } from '../motion/Reveal.jsx';
@@ -74,13 +75,17 @@ export function FeaturedCategories() {
             <StaggerItem key={c._id}>
               <Link
                 to={`/category/${c.slug}`}
-                className="group flex h-28 items-end overflow-hidden rounded-card border border-ink-700 bg-ink-800 p-5 transition-colors hover:border-rose-400/60"
+                className="group flex h-40 flex-col items-center justify-center gap-3 overflow-hidden rounded-card border border-ink-700 bg-ink-800 p-5 transition-colors hover:border-rose-400/60"
               >
                 <span
                   className="bg-glow-radial absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                   aria-hidden="true"
                 />
-                <span className="relative text-lg text-rose-50 group-hover:text-rose-200">
+                <CategoryIcon
+                  slug={c.slug}
+                  className="relative h-12 w-12 transition-transform duration-300 group-hover:scale-110"
+                />
+                <span className="relative text-base text-rose-50 group-hover:text-rose-200">
                   {c.name}
                 </span>
               </Link>

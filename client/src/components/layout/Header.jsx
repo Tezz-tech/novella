@@ -1,3 +1,4 @@
+import CategoryIcon from '../brand/CategoryIcon.jsx';
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
@@ -193,8 +194,9 @@ function CategoryMenu() {
                 <li key={c._id}>
                   <Link
                     to={`/category/${c.slug}`}
-                    className="block rounded-xl px-3 py-2.5 text-sm text-rose-50 hover:bg-rose-400/10 hover:text-rose-200"
+                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-rose-50 hover:bg-rose-400/10 hover:text-rose-200"
                   >
+                    <CategoryIcon slug={c.slug} className="h-7 w-7 shrink-0" />
                     {c.name}
                   </Link>
                 </li>
