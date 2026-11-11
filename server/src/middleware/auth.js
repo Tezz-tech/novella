@@ -32,3 +32,17 @@ export const requireRole =
     }
     return next();
   };
+
+/** Attaches req.user when a valid session exists. Never fails: guests simply have no req.user. */
+export const optionalAuth = async (req, _res, next) => {
+  const token = req.cookies?.[SESSION_COOKIE];
+  if (!token) return next();
+  try {
+    const payload = verifyToken(token);
+    const user = await User.findById(payload.sub).lean();
+    if (user && user.isActive) req.user = user;
+  } catch {
+    /* expired or invalid cookie: treat as a guest */
+  }
+  return next();
+};

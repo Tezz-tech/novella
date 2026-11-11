@@ -46,3 +46,72 @@ export function passwordResetEmail({ name, url }) {
     }),
   };
 }
+
+const itemsHtml = (items, money) =>
+  items
+    .map(
+      (i) =>
+        `<tr><td style="padding:8px 0;border-bottom:1px solid #241A24;">${escape(i.name)}${i.variantLabel ? ` · ${escape(i.variantLabel)}` : ''} × ${i.qty}</td><td align="right" style="padding:8px 0;border-bottom:1px solid #241A24;">${money(i.lineTotal)}</td></tr>`
+    )
+    .join('');
+
+const totalsHtml = (order, money) => `
+<table role="presentation" width="100%" style="margin-top:12px;font-size:14px;">
+  <tr><td>Subtotal</td><td align="right">${money(order.subtotal)}</td></tr>
+  <tr><td>Delivery</td><td align="right">${money(order.deliveryFee)}</td></tr>
+  ${order.discount ? `<tr><td>Discount</td><td align="right">−${money(order.discount)}</td></tr>` : ''}
+  <tr><td style="padding-top:8px;font-weight:600;">Total</td><td align="right" style="padding-top:8px;font-weight:600;">${money(order.total)}</td></tr>
+</table>`;
+
+/** Sent to the customer once payment is confirmed. */
+export function orderReceivedEmail({ order, money }) {
+  const first = order.customer.name.split(' ')[0];
+  const delivery =
+    order.delivery.method === 'pickup'
+      ? 'Pickup: we will confirm the pickup time with you.'
+      : `Delivering to ${escape(order.delivery.address.line1)}, ${escape(order.delivery.address.city)}, ${escape(order.delivery.address.state)}.`;
+  return {
+    subject: `Order ${order.orderNumber} received`,
+    text: `Hi ${first}, thank you. Order ${order.orderNumber} is paid. Total ${money(order.total)}.`,
+    html: layout({
+      title: `Order ${order.orderNumber}`,
+      preheader: `Thank you. Order ${order.orderNumber} is paid.`,
+      body: `<p>Hi ${escape(first)},</p>
+<p>Thank you for shopping with us. Your payment is confirmed and we have started on order <strong>${escape(order.orderNumber)}</strong>.</p>
+<table role="presentation" width="100%" style="margin:20px 0;">${itemsHtml(order.items, money)}</table>
+${totalsHtml(order, money)}
+<p style="margin-top:20px;">${delivery}</p>
+<p style="font-size:13px;color:rgba(255,240,246,0.6);">You can track this order any time with its number and your email address.</p>`,
+    }),
+  };
+}
+
+/** Sent to the store owner for every new paid order. Flags stock problems at the top. */
+export function adminNewOrderEmail({ order, money, stockIssues = [] }) {
+  const warn = stockIssues.length
+    ? `<p style="color:#F5C451;"><strong>Stock short:</strong> ${escape(stockIssues.join(', '))}. Check stock before shipping.</p>`
+    : '';
+  const addr =
+    order.delivery.method === 'pickup'
+      ? 'Pickup'
+      : [
+          order.delivery.address.line1,
+          order.delivery.address.landmark,
+          order.delivery.address.city,
+          order.delivery.address.state,
+        ]
+          .filter(Boolean)
+          .map(escape)
+          .join(', ');
+  return {
+    subject: `New paid order ${order.orderNumber}${stockIssues.length ? ' (stock check needed)' : ''}`,
+    text: `New paid order ${order.orderNumber}. Total ${money(order.total)}. Customer ${order.customer.name}, ${order.customer.phone}.`,
+    html: layout({
+      title: `New order ${order.orderNumber}`,
+      body: `${warn}<p><strong>${escape(order.orderNumber)}</strong> · ${money(order.total)}</p>
+<p>${escape(order.customer.name)} · ${escape(order.customer.phone)} · ${escape(order.customer.email)}</p>
+<p>${addr}</p>
+<table role="presentation" width="100%">${itemsHtml(order.items, money)}</table>${totalsHtml(order, money)}`,
+    }),
+  };
+}

@@ -156,3 +156,33 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
 - **Order visibility:** customers only see their own orders. Someone else's order number returns a 404, not a 403.
 - **Addresses:** up to 10 per customer, with exactly one default.
 - **Tests:** 58 server tests now include the auth suite. Client tests: 14.
+
+## Phase 5: checkout and Paystack
+
+- **One place marks an order paid:** `confirmPayment`. The verify endpoint, the webhook, admin re-verify
+  and the stale-order job all call it. It asks Paystack for the transaction, checks status, amount, currency
+  and reference against the stored order, and only then moves the order to paid. A second call changes nothing.
+- **Amount mismatch:** never fulfilled. The order is marked `failed`, the event is recorded, and the owner is
+  flagged in the timeline. Stock is untouched.
+- **Stock on payment:** taken with one conditional update per variant (`$elemMatch` on stock ≥ qty), so stock
+  never goes below zero. If the stock has gone since checkout, the order is still kept as paid, flagged
+  `stockIssue`, and the owner is alerted by email. Combos take stock from their child variants, and the combo's
+  own stock is recalculated.
+- **Webhook:** the raw body is read before JSON parsing, the HMAC-SHA512 signature is checked with a timing-safe
+  compare, and the event is then verified again with Paystack's API. Duplicate events are recorded once
+  (unique index on reference + event id). In production the webhook replies first and processes after.
+  In tests it processes first so the test can check the result.
+- **Retry:** each attempt gets its own reference, kept in `payment.references`. Retry needs the email used on
+  the order, so an order number alone is not enough to pay for someone else's order.
+- **Stale orders:** every 30 minutes, unpaid orders older than 24 hours are verified once with Paystack, then
+  cancelled. This uses `setInterval` instead of node-cron, since it is one job.
+- **Order numbers:** `NVT-YYMM-NNNNN`, from an atomic counter per month (see the Phase 1 note).
+- **Account creation at checkout:** only for a new email. If the email already has an account, the order is not
+  linked to it. Linking would let anyone attach orders to someone else's account.
+- **Tracking and the success page** return status and timeline only, never the delivery address.
+- **Email:** order received (customer) and new paid order (owner, if `ADMIN_NOTIFY_EMAIL` is set). Without SMTP
+  they are logged.
+- **Client:** the cart is cleared only after the success page confirms payment on the server. If the popup
+  cannot open, the customer is sent to Paystack's hosted page.
+- **Not yet done:** a manual end-to-end payment with Paystack test keys and test cards. That needs your keys.
+  The tests mock Paystack with nock.

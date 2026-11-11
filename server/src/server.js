@@ -2,6 +2,7 @@ import { createApp } from './app.js';
 import { env, missingOptional } from './config/env.js';
 import { connectDb, disconnectDb } from './config/db.js';
 import { logger } from './utils/logger.js';
+import { startJobs } from './jobs/cancelStaleOrders.js';
 
 const app = createApp();
 
@@ -12,6 +13,7 @@ const server = app.listen(env.PORT, () => {
 });
 
 connectDb();
+startJobs();
 
 const shutdown = (signal) => {
   logger.info(`${signal} received, shutting down`);

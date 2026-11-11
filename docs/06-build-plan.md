@@ -46,14 +46,14 @@ tick the checklist, then stop and report what to check.
 - [x] Account: profile, addresses, my orders, wishlist sync
 
 ## Phase 5 — Checkout & Paystack
-- [ ] Checkout steps, delivery zones, coupon, server quote
-- [ ] Order creation + Paystack initialize, Popup with redirect fallback
-- [ ] Verify endpoint, webhook with signature, shared idempotent `confirmPayment`
-- [ ] Success page (sparkles/confetti), failure/retry, track order page
-- [ ] Emails (order received, admin new order)
-- [ ] Stale order cancel job
-- [ ] All Paystack tests in `04-paystack.md` passing
-- [ ] Manual test with Paystack test card works end to end
+- [x] Checkout steps, delivery zones, coupon, server quote
+- [x] Order creation + Paystack initialize, Popup with redirect fallback
+- [x] Verify endpoint, webhook with signature, shared idempotent `confirmPayment`
+- [x] Success page (sparkles/confetti), failure/retry, track order page
+- [x] Emails (order received, admin new order)
+- [x] Stale order cancel job
+- [x] All Paystack tests in `04-paystack.md` passing
+- [ ] Manual test with Paystack test card works end to end (needs your test keys)
 
 ## Phase 6 — Admin
 - [ ] Admin login, layout, role guards

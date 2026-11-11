@@ -2,6 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import apiRoutes from './routes/index.js';
 import seoRoutes from './routes/seo.routes.js';
+import { paystackWebhook } from './controllers/orders.controller.js';
 import { securityHeaders, corsPolicy, sanitize, apiLimiter } from './middleware/security.js';
 import { errorHandler, notFound } from './middleware/error.js';
 
@@ -13,6 +14,12 @@ export function createApp() {
 
   app.use(securityHeaders);
   app.use(corsPolicy);
+  // Paystack webhook: raw bytes are needed for the signature, so this runs BEFORE express.json().
+  app.post(
+    '/api/payments/paystack/webhook',
+    express.raw({ type: 'application/json', limit: '512kb' }),
+    paystackWebhook
+  );
   app.use(express.json({ limit: '100kb' }));
   app.use(express.urlencoded({ extended: false, limit: '100kb' }));
   app.use(cookieParser());

@@ -1,7 +1,6 @@
 import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import SiteLayout from './components/layout/SiteLayout.jsx';
-import ComingSoon from './pages/ComingSoon.jsx';
 
 // Pages are lazy-loaded so each route ships only its own code (Phase 7 code splitting).
 const Home = lazy(() => import('./pages/Home.jsx'));
@@ -42,15 +41,11 @@ const ForgotPasswordPage = lazy(() =>
 const ResetPasswordPage = lazy(() =>
   import('./pages/auth/AuthPages.jsx').then((m) => ({ default: m.ResetPasswordPage }))
 );
+const Checkout = lazy(() => import('./pages/Checkout.jsx'));
+const OrderSuccess = lazy(() => import('./pages/OrderSuccess.jsx'));
+const Track = lazy(() => import('./pages/Track.jsx'));
 const StyleGuide = lazy(() => import('./pages/StyleGuide.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
-
-// Routes still waiting for their phase. Each is replaced as the phase is built.
-const PENDING = [
-  ['/checkout', 'Checkout'],
-  ['/order/success', 'Order success'],
-  ['/track', 'Track order'],
-];
 
 export default function App() {
   return (
@@ -63,6 +58,9 @@ export default function App() {
         <Route path="/combos" element={<CombosPage />} />
         <Route path="/deals" element={<DealsPage />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/order/success" element={<OrderSuccess />} />
+        <Route path="/track" element={<Track />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
@@ -76,9 +74,6 @@ export default function App() {
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/account/orders/:orderNumber" element={<OrderDetailPage />} />
-        {PENDING.map(([path, title]) => (
-          <Route key={path} path={path} element={<ComingSoon title={title} />} />
-        ))}
         {import.meta.env.DEV && <Route path="/styleguide" element={<StyleGuide />} />}
         <Route path="*" element={<NotFound />} />
       </Route>

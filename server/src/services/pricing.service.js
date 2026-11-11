@@ -131,7 +131,13 @@ export async function deliveryFor({ method, state, city, subtotal, settings }) {
   return {
     method,
     fee: freeDelivery ? 0 : zone.fee,
-    zone: { state: zone.state, city: zone.city, etaText: zone.etaText, baseFee: zone.fee },
+    zone: {
+      id: zone._id,
+      state: zone.state,
+      city: zone.city,
+      etaText: zone.etaText,
+      baseFee: zone.fee,
+    },
     freeDelivery,
     needsAddress: false,
   };

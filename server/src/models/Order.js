@@ -16,7 +16,13 @@ export const PAYMENT_STATUSES = ['unpaid', 'paid', 'failed', 'refunded', 'partia
 const kobo = { type: Number, default: 0, min: 0, validate: Number.isInteger };
 
 const comboLineSchema = new Schema(
-  { name: String, qty: Number, unitPrice: Number },
+  {
+    name: String,
+    qty: Number,
+    unitPrice: Number,
+    product: Types.ObjectId,
+    variant: Types.ObjectId,
+  },
   { _id: false }
 );
 
