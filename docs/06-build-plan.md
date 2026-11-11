@@ -22,14 +22,14 @@ tick the checklist, then stop and report what to check.
 - [x] Tests for product listing filters
 
 ## Phase 2 — Design system & layout
-- [ ] UI kit: Button (primary/secondary/ghost), Input, Select, Badge, Card,
+- [x] UI kit: Button (primary/secondary/ghost), Input, Select, Badge, Card,
       Drawer, Modal, Toast, Skeleton, Tabs, Price, Rating, Divider with crown
-- [ ] Animated primitives: Reveal, Stagger, MagneticButton, TiltCard, ShineSweep,
+- [x] Animated primitives: Reveal, Stagger, MagneticButton, TiltCard, ShineSweep,
       SparkleField, SatinWave, MetalText, CountUp, IntroLoader
-- [ ] Header (glass, mega menu, instant search), mobile bottom nav, footer,
+- [x] Header (glass, mega menu, instant search), mobile bottom nav, footer,
       floating WhatsApp button, route transitions, Lenis
-- [ ] `/styleguide` dev-only route showing every component
-- [ ] Reduced-motion handled
+- [x] `/styleguide` dev-only route showing every component
+- [x] Reduced-motion handled
 
 ## Phase 3 — Storefront
 - [ ] Home with every section from the spec and the signature hero
