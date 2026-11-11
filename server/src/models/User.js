@@ -30,6 +30,9 @@ const userSchema = new Schema(
     wishlist: [{ type: Types.ObjectId, ref: 'Product' }],
     isActive: { type: Boolean, default: true },
     lastLoginAt: { type: Date, default: null },
+    // Password reset: only a SHA-256 hash of the emailed token is stored, never the token itself.
+    resetTokenHash: { type: String, default: null, select: false, index: true },
+    resetTokenExpiresAt: { type: Date, default: null, select: false },
   },
   { timestamps: true }
 );

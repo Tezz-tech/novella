@@ -139,3 +139,20 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
 - **Tests added:** 42 server tests (pricing and catalogue) and 14 client tests, run with `npm test`.
 - **Not yet verified:** the visual look in a real browser, and a Lighthouse score. Both need a
   browser session, which this environment does not have.
+
+## Phase 4: accounts
+
+- **Session:** a JWT in an httpOnly cookie named `nvt_session`. It is `SameSite=Lax`, `Secure` in
+  production, and lasts 7 days. The API accepts JSON only, and the cookie is never readable by scripts.
+- **Login timing:** an unknown email still runs a bcrypt compare, so a response does not reveal whether an account exists.
+- **Password reset:** the emailed token is random and 30 minutes long. Only its SHA-256 hash is stored,
+  and it works once. The forgot-password response is the same whether or not the email exists.
+- **Email without SMTP:** if `SMTP_HOST` is not set, the email is logged instead of sent. In development the
+  reset link is also logged, so the flow can be tested. Production needs SMTP configured.
+- **Rate limits:** auth routes allow 20 attempts per 15 minutes in production. The test environment
+  uses a much higher limit so the suite can log in many times.
+- **Wishlist sync:** on login, the guest list is merged into the account, and changes after that are
+  saved with a short debounce. The stored items hold names and images only, never prices.
+- **Order visibility:** customers only see their own orders. Someone else's order number returns a 404, not a 403.
+- **Addresses:** up to 10 per customer, with exactly one default.
+- **Tests:** 58 server tests now include the auth suite. Client tests: 14.

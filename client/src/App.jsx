@@ -24,6 +24,24 @@ const FAQ = lazy(() => import('./pages/Content.jsx').then((m) => ({ default: m.F
 const Returns = lazy(() => import('./pages/Content.jsx').then((m) => ({ default: m.Returns })));
 const Privacy = lazy(() => import('./pages/Content.jsx').then((m) => ({ default: m.Privacy })));
 const Terms = lazy(() => import('./pages/Content.jsx').then((m) => ({ default: m.Terms })));
+const AccountPage = lazy(() =>
+  import('./pages/Account.jsx').then((m) => ({ default: m.AccountPage }))
+);
+const OrderDetailPage = lazy(() =>
+  import('./pages/Account.jsx').then((m) => ({ default: m.OrderDetailPage }))
+);
+const LoginPage = lazy(() =>
+  import('./pages/auth/AuthPages.jsx').then((m) => ({ default: m.LoginPage }))
+);
+const RegisterPage = lazy(() =>
+  import('./pages/auth/AuthPages.jsx').then((m) => ({ default: m.RegisterPage }))
+);
+const ForgotPasswordPage = lazy(() =>
+  import('./pages/auth/AuthPages.jsx').then((m) => ({ default: m.ForgotPasswordPage }))
+);
+const ResetPasswordPage = lazy(() =>
+  import('./pages/auth/AuthPages.jsx').then((m) => ({ default: m.ResetPasswordPage }))
+);
 const StyleGuide = lazy(() => import('./pages/StyleGuide.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
@@ -32,11 +50,6 @@ const PENDING = [
   ['/checkout', 'Checkout'],
   ['/order/success', 'Order success'],
   ['/track', 'Track order'],
-  ['/account', 'My account'],
-  ['/login', 'Log in'],
-  ['/register', 'Create account'],
-  ['/forgot-password', 'Forgot password'],
-  ['/reset-password/:token', 'Reset password'],
 ];
 
 export default function App() {
@@ -57,6 +70,12 @@ export default function App() {
         <Route path="/policies/returns" element={<Returns />} />
         <Route path="/policies/privacy" element={<Privacy />} />
         <Route path="/policies/terms" element={<Terms />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+        <Route path="/account" element={<AccountPage />} />
+        <Route path="/account/orders/:orderNumber" element={<OrderDetailPage />} />
         {PENDING.map(([path, title]) => (
           <Route key={path} path={path} element={<ComingSoon title={title} />} />
         ))}

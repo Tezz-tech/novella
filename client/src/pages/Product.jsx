@@ -448,7 +448,6 @@ export default function Product() {
                     slug: product.slug,
                     name: product.name,
                     image: images[0].url,
-                    priceMin: product.priceMin,
                   });
                   toast.info(wished ? 'Removed from wishlist' : 'Saved to wishlist');
                 }}

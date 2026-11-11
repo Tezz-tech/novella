@@ -10,6 +10,7 @@ import SmoothScroll from './SmoothScroll.jsx';
 import RouteProgress from './RouteProgress.jsx';
 import IntroLoader from '../motion/IntroLoader.jsx';
 import Toaster from '../ui/Toaster.jsx';
+import WishlistSync from '../auth/WishlistSync.jsx';
 import { Skeleton } from '../ui/display.jsx';
 
 function PageFallback() {
@@ -62,6 +63,7 @@ export default function SiteLayout() {
       <WhatsAppFab />
       <CartDrawer />
       <Toaster />
+      <WishlistSync />
     </>
   );
 }

@@ -105,7 +105,6 @@ export default function ProductCard({ product }) {
                 slug: product.slug,
                 name: product.name,
                 image: img,
-                priceMin: product.priceMin,
               });
               toast.info(wished ? 'Removed from wishlist' : 'Saved to wishlist');
             }}

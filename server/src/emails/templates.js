@@ -1,0 +1,48 @@
+/** Branded email templates: black and rose-pink, crown wordmark in text (no images, so they load everywhere). */
+
+const escape = (s) =>
+  String(s ?? '').replace(
+    /[<>&"']/g,
+    (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' })[c]
+  );
+
+export function layout({ title, preheader = '', body }) {
+  return `<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>${escape(title)}</title></head>
+  <body style="margin:0;background:#07040A;font-family:Montserrat,Arial,sans-serif;color:#FFF0F6;">
+    <span style="display:none;max-height:0;overflow:hidden;">${escape(preheader)}</span>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#07040A;padding:32px 16px;">
+      <tr><td align="center">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#0E0910;border:1px solid #241A24;border-radius:20px;padding:36px 28px;">
+          <tr><td align="center">
+            <p style="margin:0;font-family:Georgia,serif;font-size:26px;letter-spacing:2px;color:#E88FBF;">NOVELLE</p>
+            <p style="margin:4px 0 0;font-size:11px;letter-spacing:8px;color:#F5A8CC;">TECH</p>
+          </td></tr>
+          <tr><td style="padding-top:28px;font-size:15px;line-height:1.6;color:#FFF0F6;">${body}</td></tr>
+          <tr><td style="padding-top:28px;border-top:1px solid #241A24;font-size:12px;color:rgba(255,240,246,0.55);text-align:center;">
+            Smart Deals. Pretty Prices. ✨<br />Novelle Tech
+          </td></tr>
+        </table>
+      </td></tr>
+    </table>
+  </body>
+</html>`;
+}
+
+export function passwordResetEmail({ name, url }) {
+  const safeName = escape(name || 'there');
+  const safeUrl = escape(url);
+  return {
+    subject: 'Reset your Novelle Tech password',
+    text: `Hi ${name || 'there'},\n\nReset your password using this link (valid for 30 minutes):\n${url}\n\nIf you did not ask for this, you can ignore this email.`,
+    html: layout({
+      title: 'Reset your password',
+      preheader: 'Reset link valid for 30 minutes',
+      body: `<p>Hi ${safeName},</p>
+<p>We received a request to reset your password. The link below is valid for 30 minutes.</p>
+<p style="text-align:center;margin:28px 0;"><a href="${safeUrl}" style="display:inline-block;background:#E88FBF;color:#07040A;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:999px;">Reset password</a></p>
+<p style="font-size:13px;color:rgba(255,240,246,0.6);">If you did not ask for this, you can safely ignore this email.</p>`,
+    }),
+  };
+}

@@ -42,8 +42,8 @@ tick the checklist, then stop and report what to check.
 - [x] SEO: react-helmet-async titles/meta/OG, sitemap.xml + robots.txt from server
 
 ## Phase 4 — Auth & account
-- [ ] Register/login/logout, forgot/reset password, httpOnly cookie JWT
-- [ ] Account: profile, addresses, my orders, wishlist sync
+- [x] Register/login/logout, forgot/reset password, httpOnly cookie JWT
+- [x] Account: profile, addresses, my orders, wishlist sync
 
 ## Phase 5 — Checkout & Paystack
 - [ ] Checkout steps, delivery zones, coupon, server quote
