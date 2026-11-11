@@ -48,9 +48,11 @@ function Kpi({ label, value, change, format, hint }) {
         <CountUp value={value} format={format} />
       </p>
       <p className="mt-1 text-xs text-rose-50/55">
-        {change != null ? (
-          <span className={change >= 0 ? 'text-success' : 'text-danger'}>
-            {change >= 0 ? '▲' : '▼'} {Math.abs(change)}% vs previous period
+        {change === 0 ? (
+          <span className="text-rose-50/55">No change vs previous period</span>
+        ) : change != null ? (
+          <span className={change > 0 ? 'text-success' : 'text-danger'}>
+            {change > 0 ? '▲' : '▼'} {Math.abs(change)}% vs previous period
           </span>
         ) : (
           hint

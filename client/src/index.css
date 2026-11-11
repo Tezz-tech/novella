@@ -53,10 +53,17 @@
     background-image: radial-gradient(circle at 50% 40%, rgb(232 143 191 / 0.22), transparent 60%);
   }
 
+  /* Backdrop blur is expensive on phone GPUs, so phones get a nearly solid panel instead. */
   .glass {
-    background-color: rgb(14 9 16 / 0.8);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
+    background-color: rgb(14 9 16 / 0.94);
+  }
+
+  @media (min-width: 768px) {
+    .glass {
+      background-color: rgb(14 9 16 / 0.8);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+    }
   }
 
   .skip-link {

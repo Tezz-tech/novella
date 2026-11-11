@@ -7,26 +7,41 @@ import SparkleField from '../motion/SparkleField.jsx';
 import MagneticButton from '../motion/MagneticButton.jsx';
 import Logo from '../brand/Logo.jsx';
 
-const HEADLINE = 'Smart Deals.';
-const SECOND = 'Pretty Prices.';
+const HEADLINE = 'Your next phone,';
+const SECOND = 'for less.';
 
 /** Headline revealed letter by letter with the metal gradient. */
 function Letters({ text, delay = 0 }) {
   const reduce = useReducedMotion();
+  // Phones get one animated node per word (fewer nodes = less main-thread work). Desktop keeps letters.
+  const desktop =
+    typeof window !== 'undefined' && Boolean(window.matchMedia?.('(min-width: 768px)').matches);
   return (
     <span aria-label={text} className="inline-block">
-      {text.split('').map((ch, i) => (
-        <motion.span
-          key={`${ch}-${i}`}
-          aria-hidden="true"
-          initial={reduce ? false : { opacity: 0, y: '0.4em', filter: 'blur(6px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ delay: delay + i * 0.035, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-block whitespace-pre text-metal"
-        >
-          {ch}
-        </motion.span>
-      ))}
+      {/* Words never break inside, so a line wraps only between words. */}
+      {text.split(' ').map((word, w, words) => {
+        const offset = words.slice(0, w).reduce((n, x) => n + x.length, 0);
+        return (
+          <span key={`${word}-${w}`} aria-hidden="true" className="inline-block whitespace-nowrap">
+            {(desktop ? word.split('') : [word]).map((ch, i) => (
+              <motion.span
+                key={`${ch}-${i}`}
+                initial={reduce ? false : { opacity: 0, y: '0.4em' }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: delay + (offset + i) * 0.035,
+                  duration: 0.6,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="inline-block text-metal"
+              >
+                {ch}
+              </motion.span>
+            ))}
+            {w < words.length - 1 && <span>&nbsp;</span>}
+          </span>
+        );
+      })}
     </span>
   );
 }
@@ -70,8 +85,12 @@ function CursorGlow({ containerRef }) {
   return (
     <motion.div
       aria-hidden="true"
-      style={{ x: sx, y: sy }}
-      className="pointer-events-none absolute left-0 top-0 hidden h-[400px] w-[400px] rounded-full bg-rose-400/20 blur-3xl md:block"
+      style={{
+        x: sx,
+        y: sy,
+        background: 'radial-gradient(circle, rgba(232,143,191,0.28), transparent 65%)',
+      }}
+      className="pointer-events-none absolute left-0 top-0 hidden h-[400px] w-[400px] rounded-full md:block"
     />
   );
 }
@@ -143,7 +162,7 @@ export default function Hero({ visual }) {
         <div className="relative mx-auto flex w-full max-w-sm items-center justify-center md:max-w-none">
           <motion.div style={reduce ? undefined : { y: bob }} className="relative w-full max-w-md">
             <div
-              className="absolute inset-0 -z-10 rounded-full bg-rose-400/25 blur-[70px]"
+              className="absolute inset-0 -z-10 rounded-full bg-glow-radial"
               aria-hidden="true"
             />
             {visual ? (
@@ -154,7 +173,7 @@ export default function Hero({ visual }) {
                 height="800"
                 fetchPriority="high"
                 decoding="async"
-                className="mx-auto w-full object-contain drop-shadow-[0_0_40px_rgba(232,143,191,0.45)]"
+                className="mx-auto w-full object-contain"
               />
             ) : (
               <Logo className="mx-auto" />

@@ -218,3 +218,31 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
 - **Tests:** 25 admin tests cover role gating, product creation and stock, combo stock refresh, bulk price
   preview and apply, the order state machine, refunds through mocked Paystack, owner-only settings, staff
   invites, and the activity log. Client: 17 tests, including the variant grid. Server total: 96.
+
+## Phase 7: polish and ship
+
+- **Lighthouse (mobile, throttled, cold profile), home page:** performance 60 (target 85, **not met**),
+  accessibility 95 (target 95, met), best practices 96, SEO 100 (target 95, met).
+  The main causes: a React bundle of about 125 KB that takes time to run on throttled CPUs, and the
+  mandatory first-visit intro (up to 1.6 s), which covers the first paint on a cold profile. Returning
+  visitors in the same session skip the intro. Closing the gap needs prerendering the home page or
+  cutting hydration work. That is a larger change, so it is left for a decision.
+- **Performance changes made:** blur and drop-shadow filters removed from the hero and cards, since they cost
+  paint time on phones. The header's backdrop blur only applies at tablet width and up. On phones the
+  headline reveals word by word rather than letter by letter (desktop keeps letters). No entrance fade
+  on the first paint. The hero placeholder shows at once and the real product replaces it when loaded.
+  The API origin is preconnected.
+- **SEO:** a static `robots.txt` in `client/public`. The API serves `/sitemap.xml`, so the storefront
+  domain needs a rewrite to it (see README).
+- **Images:** Cloudinary uploads use `f_auto,q_auto`, and product images lazy-load. Responsive `srcset`
+  sizes are not done yet.
+- **Resilience:** an error boundary around the storefront and admin, a connection notice when the device
+  goes offline, and skeletons while data loads.
+- **Layout checks:** headless Chrome screenshots at 360, 390, 768 and 1280 px were reviewed. At 1920 px no
+  horizontal overflow was found, but the screenshot was not reviewed. At tablet width the bottom bar now
+  shows up to 1024 px, because the header links are hidden below that, so Combos and Deals stay reachable.
+- **Shopper flow in a real browser:** product → add to cart → cart → checkout (contact step) ran with no
+  runtime errors. No payment was made, since that needs live Paystack keys.
+- **Not verified here:** a real Paystack payment, sent emails (no SMTP), Cloudinary uploads (no keys), and
+  the production deploy.
+- **Lint:** 0 errors and 7 fast-refresh warnings. These are files that export both a component and a helper.

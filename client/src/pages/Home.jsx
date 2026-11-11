@@ -16,7 +16,10 @@ import {
 export default function Home() {
   const { data } = useProducts({ tag: 'featured', limit: 1 });
   const featured = data?.items?.[0];
-  const visual = featured ? { name: featured.name, image: featured.coverImage?.url } : null;
+  // Show the placeholder at once (fast first paint), then swap in the featured product when it arrives.
+  const visual = featured
+    ? { name: featured.name, image: featured.coverImage?.url }
+    : { name: 'Novelle Tech', image: '/placeholders/product.svg' };
 
   return (
     <>

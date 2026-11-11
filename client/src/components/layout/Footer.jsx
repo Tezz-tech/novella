@@ -25,7 +25,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-24 overflow-hidden border-t border-ink-700 bg-ink-900 pb-24 md:pb-0">
+    <footer className="relative mt-24 overflow-hidden border-t border-ink-700 bg-ink-900 pb-24 lg:pb-0">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4 md:px-8">
         <div className="flex flex-col gap-4">
           <Logo variant="mark" className="h-14 w-auto" />

@@ -67,12 +67,12 @@ tick the checklist, then stop and report what to check.
 - [x] New-order live toast
 
 ## Phase 7 — Polish & ship
-- [ ] Lighthouse mobile: performance ≥ 85, accessibility ≥ 95, SEO ≥ 95
-- [ ] Image optimisation (Cloudinary `f_auto,q_auto`, responsive sizes, lazy loading)
-- [ ] Code splitting (admin, heavy animation chunks)
-- [ ] Error boundaries, offline toast, loading states everywhere
-- [ ] Test on 360px, 768px, 1280px, 1920px widths
-- [ ] README: setup, env, seeding, Paystack webhook setup with ngrok,
+- [ ] Lighthouse mobile: performance ≥ 85 — NOT MET (60); accessibility 95 ✓; SEO 100 ✓ (see DECISIONS.md)
+- [ ] Image optimisation — partial: `f_auto,q_auto` and lazy loading done; responsive sizes not done
+- [x] Code splitting (admin, heavy animation chunks)
+- [x] Error boundaries, offline toast, loading states everywhere
+- [x] Test on 360px, 768px, 1280px, 1920px widths (screenshots at 360, 390, 768, 1280 reviewed; 1920 probed only)
+- [x] README: setup, env, seeding, Paystack webhook setup with ngrok,
       deployment (client → Vercel/Netlify; server → Render/Railway; DB → Atlas),
       switching from test to live keys
-- [ ] Final full test run, then commit
+- [x] Final full test run, then commit

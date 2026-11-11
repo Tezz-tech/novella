@@ -58,7 +58,7 @@ export default function IntroLoader() {
           exit={{ opacity: 0, transition: { duration: 0.5 } }}
         >
           <motion.div
-            className="relative"
+            className="relative overflow-hidden"
             initial={{ opacity: 0, y: -10, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -66,7 +66,7 @@ export default function IntroLoader() {
             <Logo variant="mark" className="h-24 w-auto" />
             <motion.span
               aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 w-10 -skew-x-12 bg-gradient-to-r from-transparent via-white/70 to-transparent"
+              className="pointer-events-none absolute inset-y-0 w-6 -skew-x-12 bg-gradient-to-r from-transparent via-rose-100/50 to-transparent"
               initial={{ left: '-20%' }}
               animate={{ left: '120%' }}
               transition={{ delay: 0.6, duration: 0.7, ease: 'easeInOut' }}

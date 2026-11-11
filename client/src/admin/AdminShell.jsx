@@ -10,6 +10,7 @@ import Logo from '../components/brand/Logo.jsx';
 import Toaster from '../components/ui/Toaster.jsx';
 import { Drawer } from '../components/ui/Overlay.jsx';
 import { lazyPage } from './lazy.js';
+import ErrorBoundary from '../components/ErrorBoundary.jsx';
 import { ROLE_LABELS } from './labels.js';
 
 const Overview = lazyPage(() => import('./pages/Overview.jsx'), 'Overview');
@@ -187,21 +188,23 @@ export default function AdminShell() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <Routes>
-                  <Route index element={<Overview />} />
-                  <Route path="orders" element={<Orders />} />
-                  <Route path="orders/:id" element={<OrderDetail />} />
-                  <Route path="products" element={<Products />} />
-                  <Route path="products/new" element={<ProductForm />} />
-                  <Route path="products/:id" element={<ProductForm />} />
-                  <Route path="payments" element={<Payments />} />
-                  <Route path="customers" element={<Customers />} />
-                  <Route path="catalogue" element={<Catalogue />} />
-                  <Route path="delivery" element={<Delivery />} />
-                  <Route path="marketing" element={<Marketing />} />
-                  <Route path="settings" element={<Settings />} />
-                  <Route path="*" element={<Navigate to="/admin" replace />} />
-                </Routes>
+                <ErrorBoundary>
+                  <Routes>
+                    <Route index element={<Overview />} />
+                    <Route path="orders" element={<Orders />} />
+                    <Route path="orders/:id" element={<OrderDetail />} />
+                    <Route path="products" element={<Products />} />
+                    <Route path="products/new" element={<ProductForm />} />
+                    <Route path="products/:id" element={<ProductForm />} />
+                    <Route path="payments" element={<Payments />} />
+                    <Route path="customers" element={<Customers />} />
+                    <Route path="catalogue" element={<Catalogue />} />
+                    <Route path="delivery" element={<Delivery />} />
+                    <Route path="marketing" element={<Marketing />} />
+                    <Route path="settings" element={<Settings />} />
+                    <Route path="*" element={<Navigate to="/admin" replace />} />
+                  </Routes>
+                </ErrorBoundary>
               </motion.div>
             </AnimatePresence>
           </main>

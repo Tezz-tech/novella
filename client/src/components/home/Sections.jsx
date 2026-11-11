@@ -37,7 +37,7 @@ export function PillarStrip() {
             >
               <span
                 aria-hidden="true"
-                className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-rose-400/10 blur-2xl transition-transform duration-500 group-hover:scale-150"
+                className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-glow-radial transition-transform duration-500 group-hover:scale-150"
               />
               <h3 className="text-lg text-rose-50">{p.title}</h3>
               <p className="mt-2 text-sm text-rose-50/65">{p.body}</p>

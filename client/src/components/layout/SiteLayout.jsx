@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import Header from './Header.jsx';
@@ -10,6 +10,8 @@ import SmoothScroll from './SmoothScroll.jsx';
 import RouteProgress from './RouteProgress.jsx';
 import IntroLoader from '../motion/IntroLoader.jsx';
 import Toaster from '../ui/Toaster.jsx';
+import ErrorBoundary from '../ErrorBoundary.jsx';
+import ConnectionWatch from './ConnectionWatch.jsx';
 import WishlistSync from '../auth/WishlistSync.jsx';
 import { Skeleton } from '../ui/display.jsx';
 
@@ -34,6 +36,12 @@ function PageFallback() {
 export default function SiteLayout() {
   const { pathname } = useLocation();
   const reduce = useReducedMotion();
+  // No entrance fade on the first paint, so the page (and its LCP) shows at once. Navigations still fade.
+  const mounted = useRef(false);
+  const isFirst = !mounted.current;
+  useEffect(() => {
+    mounted.current = true;
+  }, []);
 
   return (
     <>
@@ -45,16 +53,18 @@ export default function SiteLayout() {
       <RouteProgress />
       <Header />
 
-      <main id="content" tabIndex={-1} className="min-h-[70vh] pb-24 outline-none md:pb-0">
+      <main id="content" tabIndex={-1} className="min-h-[70vh] pb-24 outline-none lg:pb-0">
         <motion.div
           key={pathname}
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
+          initial={isFirst ? false : reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduce ? 0.15 : 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Suspense fallback={<PageFallback />}>
-            <Outlet />
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<PageFallback />}>
+              <Outlet />
+            </Suspense>
+          </ErrorBoundary>
         </motion.div>
       </main>
 
@@ -64,6 +74,7 @@ export default function SiteLayout() {
       <CartDrawer />
       <Toaster />
       <WishlistSync />
+      <ConnectionWatch />
     </>
   );
 }

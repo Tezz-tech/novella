@@ -25,7 +25,7 @@ export default function MobileNav() {
   return (
     <nav
       aria-label="Mobile"
-      className="glass fixed inset-x-0 bottom-0 z-40 border-t border-ink-700 pb-[env(safe-area-inset-bottom)] md:hidden"
+      className="glass fixed inset-x-0 bottom-0 z-40 border-t border-ink-700 pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       <ul className="grid grid-cols-5">
         {ITEMS.map((i) => (
