@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import apiRoutes from './routes/index.js';
+import seoRoutes from './routes/seo.routes.js';
 import { securityHeaders, corsPolicy, sanitize, apiLimiter } from './middleware/security.js';
 import { errorHandler, notFound } from './middleware/error.js';
 
@@ -16,6 +17,8 @@ export function createApp() {
   app.use(express.urlencoded({ extended: false, limit: '100kb' }));
   app.use(cookieParser());
   app.use(sanitize);
+
+  app.use(seoRoutes);
 
   app.use('/api', apiLimiter);
   app.use('/api', apiRoutes);

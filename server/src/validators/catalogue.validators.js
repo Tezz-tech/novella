@@ -52,6 +52,13 @@ export const productListQuery = z
     tag: z.preprocess(emptyToUndefined, z.enum(PRODUCT_TAGS).optional()),
     type: z.preprocess(emptyToUndefined, z.enum(PRODUCT_TYPES).optional()),
     storage: optionalString(40),
+    deal: z.preprocess(
+      emptyToUndefined,
+      z
+        .enum(['true'])
+        .transform(() => true)
+        .optional()
+    ),
     sort: z.preprocess(emptyToUndefined, z.enum(SORT_OPTIONS).default('newest')),
     page: z.preprocess(emptyToUndefined, z.coerce.number().int().min(1).default(1)),
     limit: z.preprocess(emptyToUndefined, z.coerce.number().int().min(1).max(50).default(24)),

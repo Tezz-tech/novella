@@ -313,6 +313,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setCartOpen(true)}
+            id="cart-button"
             aria-label={`Open cart, ${cartCount} items`}
             className="group relative grid h-11 w-11 place-items-center overflow-hidden rounded-pill text-rose-50 hover:bg-rose-400/10"
           >

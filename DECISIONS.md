@@ -115,3 +115,27 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
   is still marked paid (never lose a paid order), no stock is decremented below 0, `stockIssue: true` is
   set, and the admin is alerted.
 - **Phase 5, webhook:** the raw body is mounted before `express.json()`, for that path only.
+
+## Phase 2 and 3: design system, storefront
+
+- **No testimonials section.** The build plan asked for testimonials, but there are no real customer
+  reviews yet. Showing invented quotes would break the rule against fabricated reviews, so the home
+  page has a "Why buy from Novelle Tech" section instead. Real testimonials can be added through the admin later.
+- **Cart prices come only from the server.** The browser stores only variant ids, quantities and
+  display labels. The cart drawer, cart page and checkout all price through `POST /api/cart/quote`.
+- **Quote rules:** duplicate lines merge and cap at 99. Out-of-stock or over-stock lines are flagged and
+  left out of the subtotal, and `hasIssues` blocks checkout. Delivery comes from the zone table (a
+  city-specific zone beats the whole-state zone). Free delivery applies at or above the store threshold.
+  Pickup costs nothing. A state with no zone returns a clear 400. Coupons only apply when
+  `features.coupons` is on, which it is not by default.
+- **Hot deals** use a server flag, `hasDiscount`, set on save. The countdown uses the soonest `dealEndsAt`.
+- **Price filter** uses fixed presets (under ₦100k, ₦100k–₦300k, ₦300k–₦600k, ₦600k and above), sent in kobo.
+- **Shop filters live in the URL,** so filtered views can be shared and bookmarked.
+- **Recently viewed and wishlist** store only names and images, never prices. The wishlist shows no price,
+  to avoid showing a stale one.
+- **Fly-to-cart** uses the Web Animations API on transform and opacity only, and is skipped for reduced motion.
+- **SEO:** each page sets its title, description, Open Graph and canonical tags. `/sitemap.xml` and
+  `/robots.txt` are served from the API, outside `/api`. Admin, account, cart and checkout are disallowed.
+- **Tests added:** 42 server tests (pricing and catalogue) and 14 client tests, run with `npm test`.
+- **Not yet verified:** the visual look in a real browser, and a Lighthouse score. Both need a
+  browser session, which this environment does not have.

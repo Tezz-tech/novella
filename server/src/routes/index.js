@@ -3,6 +3,8 @@ import healthRoutes from './health.routes.js';
 import productRoutes from './public/products.routes.js';
 import catalogueRoutes from './public/catalogue.routes.js';
 import storefrontRoutes from './public/storefront.routes.js';
+import cartRoutes from './public/cart.routes.js';
+import newsletterRoutes from './public/newsletter.routes.js';
 
 /** All API routes, mounted under /api in app.js. Admin routers are added here in Phase 6. */
 const router = Router();
@@ -11,5 +13,7 @@ router.use('/health', healthRoutes);
 router.use('/products', productRoutes);
 router.use('/', catalogueRoutes);
 router.use('/', storefrontRoutes);
+router.use('/cart', cartRoutes);
+router.use('/newsletter', newsletterRoutes);
 
 export default router;

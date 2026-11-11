@@ -77,6 +77,7 @@ const productSchema = new Schema(
     soldCount: { type: Number, default: 0, min: 0 },
     ratingAvg: { type: Number, default: 0, min: 0, max: 5 },
     ratingCount: { type: Number, default: 0, min: 0 },
+    hasDiscount: { type: Boolean, default: false, index: true }, // any active variant has a compare-at price
     dealEndsAt: { type: Date, default: null }, // drives the Hot Deals countdown (see DECISIONS.md)
 
     // Derived from variants on every save, so listings can filter and sort cheaply.
@@ -105,6 +106,7 @@ productSchema.pre('validate', function derive(next) {
   if (this.type !== 'combo') {
     this.totalStock = active.reduce((sum, v) => sum + (v.stock || 0), 0);
   }
+  this.hasDiscount = active.some((v) => v.compareAtPrice && v.compareAtPrice > v.price);
   next();
 });
 

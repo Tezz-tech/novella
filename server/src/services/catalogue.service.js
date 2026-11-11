@@ -86,6 +86,7 @@ async function buildFilter(q) {
   if (q.type) match.type = q.type;
   if (q.inStock) match.totalStock = { $gt: 0 };
   if (q.storage) match['variants.optionValues.Storage'] = q.storage;
+  if (q.deal) match.hasDiscount = true;
 
   // A product matches a price range when its lowest active price is inside it.
   if (q.minPrice != null || q.maxPrice != null) {

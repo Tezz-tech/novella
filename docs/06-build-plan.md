@@ -32,14 +32,14 @@ tick the checklist, then stop and report what to check.
 - [x] Reduced-motion handled
 
 ## Phase 3 — Storefront
-- [ ] Home with every section from the spec and the signature hero
-- [ ] Shop/category with filters, sorting, URL state, skeletons
-- [ ] Product page with variant picker, gallery, WhatsApp enquiry, related, recently viewed
-- [ ] Combos and Deals pages
-- [ ] Cart store (Zustand persisted), cart drawer, fly-to-cart animation, cart page
+- [x] Home with every section from the spec and the signature hero
+- [x] Shop/category with filters, sorting, URL state, skeletons
+- [x] Product page with variant picker, gallery, WhatsApp enquiry, related, recently viewed
+- [x] Combos and Deals pages
+- [x] Cart store (Zustand persisted), cart drawer, fly-to-cart animation, cart page
       using `/cart/quote` for server prices
-- [ ] Wishlist, content pages, 404
-- [ ] SEO: react-helmet-async titles/meta/OG, sitemap.xml + robots.txt from server
+- [x] Wishlist, content pages, 404
+- [x] SEO: react-helmet-async titles/meta/OG, sitemap.xml + robots.txt from server
 
 ## Phase 4 — Auth & account
 - [ ] Register/login/logout, forgot/reset password, httpOnly cookie JWT
