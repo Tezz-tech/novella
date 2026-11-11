@@ -14,12 +14,12 @@ tick the checklist, then stop and report what to check.
 - [x] `git init` and first commit
 
 ## Phase 1 — Data & catalogue API
-- [ ] All models in `03-backend-api.md`
-- [ ] Public catalogue routes (products with filters/facets, product detail, categories, brands, suggest)
-- [ ] Seed script: categories, brands, ~30 demo products (phones with storage/colour
+- [x] All models in `03-backend-api.md`
+- [x] Public catalogue routes (products with filters/facets, product detail, categories, brands, suggest)
+- [x] Seed script: categories, brands, ~30 demo products (phones with storage/colour
       variants, laptops, accessories, 4 combos), delivery zones for all 36 states + FCT
       (Lagos cheaper), settings, an owner user from env
-- [ ] Tests for product listing filters
+- [x] Tests for product listing filters
 
 ## Phase 2 — Design system & layout
 - [ ] UI kit: Button (primary/secondary/ghost), Input, Select, Badge, Card,
