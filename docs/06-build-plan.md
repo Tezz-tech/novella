@@ -58,10 +58,10 @@ tick the checklist, then stop and report what to check.
 ## Phase 6 — Admin
 - [x] Admin login, layout, role guards
 - [x] Overview with charts and KPIs
-- [x] Products list, inline edit, create/edit with variants, images, combos
+- [x] Products list, inline edit, create/edit with variants, images, combos (inline edit is on the product form, not in the list)
 - [x] Bulk price update with preview
 - [x] Orders list + detail (address copy/maps, status flow, tracking, print slip)
-- [x] Payments screen, re-verify, refunds, mark paid manually (owner)
+- [ ] Payments screen, re-verify, refunds, mark paid manually (owner) — mark paid manually NOT built: conflicts with CLAUDE.md rule 2, awaiting your decision
 - [x] Customers, categories/brands, delivery zones, coupons, homepage content,
       settings, staff, activity log
 - [x] New-order live toast
