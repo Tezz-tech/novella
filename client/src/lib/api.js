@@ -3,7 +3,7 @@
  * Errors are thrown as ApiError with the server's message and field errors.
  */
 // Relative by default: the storefront calls /api on its own domain and the host forwards it to the API.
-const BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
+const BASE = '/api';
 
 export class ApiError extends Error {
   constructor(status, message, errors) {

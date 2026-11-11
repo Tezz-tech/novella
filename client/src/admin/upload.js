@@ -1,6 +1,6 @@
 import { ApiError } from '../lib/api.js';
 
-const BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
+const BASE = '/api';
 
 /** Uploads one product photo (JPG, PNG or WebP, up to 5 MB). Returns { url, publicId }. */
 export async function uploadAdminImage(file) {

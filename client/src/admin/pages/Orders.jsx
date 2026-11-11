@@ -28,7 +28,7 @@ const TABS = [
 ];
 
 const exportUrl = (query) => {
-  const base = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
+  const base = '/api';
   const qs = new URLSearchParams({ ...query, format: 'csv' }).toString();
   return `${base}/admin/orders?${qs}`;
 };
