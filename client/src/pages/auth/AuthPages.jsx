@@ -180,7 +180,7 @@ export function RegisterPage() {
             {...register('email')}
           />
           <Input
-            label="WhatsApp number"
+            label="Phone (optional)"
             type="tel"
             autoComplete="tel"
             error={errors.phone?.message}

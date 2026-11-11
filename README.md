@@ -143,7 +143,7 @@ After deploying:
   takes naira and converts at the API boundary.
 - The server recalculates every price, delivery fee and discount. The browser's amounts are ignored.
 - A paid status is set only after a Paystack check or a signed webhook.
-- Customers and the owner are messaged on WhatsApp only. No order email is sent.
+- The owner gets a WhatsApp alert for every paid order. Customers are not messaged automatically, and no email is sent.
 - Every admin change is written to the activity log with before and after values.
 - "Mark paid manually" is not built. It conflicts with the rule above and is listed in DECISIONS.md
   for a decision.

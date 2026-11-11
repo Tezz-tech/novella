@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { toWhatsAppNumber, sendTemplate } from '../src/services/whatsapp.service.js';
-import { orderStatusParams, ownerNewOrderParams } from '../src/services/whatsapp.messages.js';
+import { ownerNewOrderParams } from '../src/services/whatsapp.messages.js';
 
 beforeAll(() => {
   nock.disableNetConnect();
@@ -83,11 +83,5 @@ describe('message content', () => {
     expect(p[3]).toMatch(/15,000/);
     expect(p[6]).toBe('Stock OK');
     expect(ownerNewOrderParams(order, ['Galaxy (needed 2)'])[6]).toMatch(/Stock check needed/);
-  });
-
-  it('says the right thing for shipped orders, with tracking when there is one', () => {
-    const shipped = orderStatusParams(order, 'shipped', { courier: 'GIG', trackingNumber: 'G123' });
-    expect(shipped[2]).toBe('on its way');
-    expect(shipped[3]).toMatch(/GIG.*G123/);
   });
 });

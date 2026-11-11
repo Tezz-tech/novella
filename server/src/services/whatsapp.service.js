@@ -13,9 +13,6 @@ import { logger } from '../utils/logger.js';
 
 export const TEMPLATES = {
   ownerNewOrder: 'owner_new_order',
-  orderReceived: 'order_received',
-  orderStatus: 'order_status',
-  passwordReset: 'password_reset',
 };
 
 export const whatsappConfigured = () =>

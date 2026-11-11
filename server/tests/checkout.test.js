@@ -345,7 +345,7 @@ describe('tracking, retry and stale orders', () => {
 });
 
 describe('WhatsApp after payment', () => {
-  it('alerts the owner and confirms to the customer once a payment is confirmed', async () => {
+  it('alerts the owner once a payment is confirmed, and no one else', async () => {
     const sent = [];
     nock('https://graph.facebook.com')
       .persist()
@@ -365,7 +365,7 @@ describe('WhatsApp after payment', () => {
     expect(owner.to).toBe('2348000000001');
     expect(owner.template.components[0].parameters[0].text).toBe(res.body.data.orderNumber);
 
-    const customer = sent.find((b) => b.template.name === 'order_received');
-    expect(customer.to).toBe('2348012345678');
+    // Customers are not messaged automatically.
+    expect(sent.some((b) => b.to === '2348012345678')).toBe(false);
   });
 });

@@ -12,7 +12,7 @@ export const registerBody = z.object({
   name: z.string().trim().min(2, 'Enter your full name').max(80),
   email,
   password,
-  phone: z.string().trim().min(7, 'Enter the WhatsApp number on your account').max(20),
+  phone: z.string().trim().max(20).optional(),
 });
 
 export const loginBody = z.object({

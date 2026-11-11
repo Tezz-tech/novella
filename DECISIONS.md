@@ -261,3 +261,12 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
 - **Staff invites** no longer send email. The temporary password is shown once to the owner who sends the invite.
 - Not built: sending WhatsApp free-form text, and WhatsApp replies from customers. These need a webhook and a
   24-hour conversation window.
+
+## Scope cut: automatic customer messages removed
+
+- The client asked for WhatsApp-only contact and an owner alert for each paid order. Those are kept.
+- Removed (not requested): WhatsApp messages to customers for order confirmation and status updates, and the
+  password-reset WhatsApp message. Phone number at sign-up is optional again.
+- Still present: the storefront WhatsApp button and "chat on WhatsApp" links, which are in the spec.
+- **Open:** the forgot-password flow now creates a reset token but has no way to deliver it. It only logs the
+  link in development. Choose one: an owner-assisted reset in the admin, or re-add a delivery channel.

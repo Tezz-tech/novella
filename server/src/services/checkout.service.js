@@ -6,7 +6,7 @@ import { decrementVariant, refreshCombosContaining, refreshComboStock } from './
 import { HttpError } from '../utils/httpError.js';
 import { logger } from '../utils/logger.js';
 import { env } from '../config/env.js';
-import { notifyOwnerNewOrder, notifyCustomerOrderReceived } from './whatsapp.messages.js';
+import { notifyOwnerNewOrder } from './whatsapp.messages.js';
 import { formatNaira } from '../utils/money.js';
 
 const UNPAID_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -248,11 +248,8 @@ async function deductStock(order) {
 }
 
 async function notifyPaid(order, issues) {
-  // WhatsApp only: the customer gets the confirmation, the owner gets the alert.
-  const results = await Promise.allSettled([
-    notifyCustomerOrderReceived(order),
-    notifyOwnerNewOrder(order, issues),
-  ]);
+  // Only the owner is messaged automatically. Customers are not messaged.
+  const results = await Promise.allSettled([notifyOwnerNewOrder(order, issues)]);
   for (const r of results) {
     if (r.status === 'rejected')
       logger.error('WhatsApp message failed for ' + order.orderNumber, r.reason);
