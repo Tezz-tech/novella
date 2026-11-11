@@ -7,6 +7,7 @@ import cartRoutes from './public/cart.routes.js';
 import newsletterRoutes from './public/newsletter.routes.js';
 import authRoutes from './auth.routes.js';
 import { ordersRoutes, paymentsRoutes } from './public/orders.routes.js';
+import jobRoutes from './jobs.routes.js';
 import adminRoutes from './admin.routes.js';
 import accountRoutes from './account.routes.js';
 
@@ -23,6 +24,7 @@ router.use('/auth', authRoutes);
 router.use('/me', accountRoutes);
 router.use('/orders', ordersRoutes);
 router.use('/admin', adminRoutes);
+router.use('/jobs', jobRoutes);
 router.use('/payments', paymentsRoutes);
 
 export default router;

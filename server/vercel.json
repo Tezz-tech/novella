@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "cd .. && npm ci",
+  "functions": {
+    "api/index.js": { "maxDuration": 30 }
+  },
+  "routes": [{ "src": "/(.*)", "dest": "/api/index.js" }],
+  "crons": [{ "path": "/api/jobs/cancel-stale", "schedule": "0 3 * * *" }]
+}

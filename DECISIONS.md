@@ -277,3 +277,13 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
   templates doc, its env settings and its tests. The earlier WhatsApp sections above are superseded by this.
 - Kept: the storefront WhatsApp button and chat links, and `VITE_WHATSAPP_NUMBER`.
 - Still open: the forgot-password flow has no way to deliver its reset link.
+
+## Vercel deployment
+
+- Two Vercel projects from one repo: the API (root `server`) and the storefront (root `client`).
+- The API runs as one serverless function (`server/api/index.js`). It does not start the listener or the
+  in-process timer. Stale-order cancellation runs from Vercel cron through `/api/jobs/cancel-stale`, which requires
+  `CRON_SECRET`. The schedule is daily to fit the Hobby plan.
+- The database connection is created once per warm instance and reused.
+- The storefront uses SPA rewrites, long cache lifetimes on hashed assets, and basic security headers.
+- Both projects install from the root lockfile with `npm ci` (checked with a dry run).

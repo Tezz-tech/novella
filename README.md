@@ -93,20 +93,29 @@ Paystack needs to reach your API to send webhooks, so for local testing expose t
 The webhook checks the `x-paystack-signature` header against the raw request body on every call.
 Requests that fail the check get a 401.
 
-## Deployment
+## Deployment (Vercel)
 
-| Part                 | Where             | Notes                                                                                                                                                     |
-| -------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Storefront and admin | Vercel or Netlify | Build with `npm run build -w client`, output `client/dist`. Set `VITE_*` variables. Add an SPA rewrite so `/product/…` and `/admin/…` return `index.html` |
-| API                  | Render or Railway | Start command `npm run start -w server`. Set all `server/.env` variables. Health check: `/api/health`                                                     |
-| Database             | MongoDB Atlas     | Allow the API host in network access. Use a dedicated user                                                                                                |
+The repo deploys as two Vercel projects, both from this GitHub repo.
 
-After deploying:
+**1. API project**
 
-- Point the storefront's `/sitemap.xml` at the API's `/sitemap.xml` with a rewrite. The storefront's
-  `robots.txt` is in `client/public`.
-- Set the Paystack webhook URL to the API domain (see above).
-- Set `CLIENT_URL` on the API to the storefront's public origin. CORS and the payment redirect depend on it.
+- Root Directory: `server`. Framework: Other. Install and build settings come from `server/vercel.json`.
+- Environment variables: everything in `server/.env.example`. Set `CLIENT_URL` to the storefront URL,
+  and `CRON_SECRET` to a long random string.
+- Health check: `https://<api>.vercel.app/api/health`.
+- Paystack webhook URL: `https://<api>.vercel.app/api/payments/paystack/webhook`.
+- The schedule in `server/vercel.json` runs once a day, because the Vercel Hobby plan allows one cron job per day.
+  Stale unpaid orders are cancelled then. Use a Pro plan for an hourly schedule.
+
+**2. Storefront project**
+
+- Root Directory: `client`. Framework: Vite. Install and build settings come from `client/vercel.json`.
+- Environment variables: `VITE_API_URL=https://<api>.vercel.app/api`, `VITE_PAYSTACK_PUBLIC_KEY`,
+  `VITE_CURRENCY=NGN`, `VITE_WHATSAPP_NUMBER`.
+- Add a rewrite so `/sitemap.xml` is served from the API (edit `client/vercel.json` and add
+  `{ "source": "/sitemap.xml", "destination": "https://<api>.vercel.app/sitemap.xml" }` to `rewrites`).
+
+After the first deploy, run `npm run seed` once against the production database (set `MONGODB_URI` in your shell).
 
 ## Moving from test to live keys
 
