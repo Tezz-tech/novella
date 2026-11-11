@@ -287,3 +287,12 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
 - The database connection is created once per warm instance and reused.
 - The storefront uses SPA rewrites, long cache lifetimes on hashed assets, and basic security headers.
 - Both projects install from the root lockfile with `npm ci` (checked with a dry run).
+
+## Hero slideshow and the device photo
+
+- The device photo is used uncropped, as the owner instructed. The owner removed CLAUDE.md rule 7
+  (no Apple logos or marketing images) and took responsibility for this image in writing. This is
+  a documented exception, not a change to the rule for other images.
+- The hero is a five-slide carousel: the device photo plus four openly licensed images from Wikimedia
+  Commons (CC BY, CC BY-SA and CC0). Attribution is in `client/public/brand/slides/CREDITS.txt`.
+- The carousel pauses on hover or focus and stops auto-advancing for reduced motion.

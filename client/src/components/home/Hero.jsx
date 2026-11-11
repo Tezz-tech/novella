@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import Button from '../ui/Button.jsx';
+import HeroSlideshow from './HeroSlideshow.jsx';
 
 /**
  * Home hero: headline and actions on the left, the device photograph on the right, and the
@@ -45,16 +46,8 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.div {...rise(0.25)} className="relative mx-auto w-full max-w-md">
-          <img
-            src="/brand/hero-device.jpg"
-            alt="Back of a light blue smartphone showing its camera module"
-            width="744"
-            height="536"
-            fetchPriority="high"
-            decoding="async"
-            className="h-auto w-full rounded-card object-cover"
-          />
+        <motion.div {...rise(0.25)}>
+          <HeroSlideshow />
         </motion.div>
       </div>
 
