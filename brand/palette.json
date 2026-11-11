@@ -1,0 +1,15 @@
+{
+  "brand": "Novelle Tech",
+  "tagline": "Smart Deals. Pretty Prices. ✨",
+  "pillars": ["Affordable Phone Combos", "Latest Smartphones", "Reliable Support"],
+  "ink": { "950": "#07040A", "900": "#0E0910", "800": "#171018", "700": "#241A24" },
+  "rose": {
+    "50": "#FFF0F6", "200": "#FCD3E6", "300": "#F5A8CC", "400": "#E88FBF",
+    "500": "#D884A8", "700": "#902F54", "800": "#601830", "900": "#3A0C1F"
+  },
+  "accent": { "spark": "#F5C451" },
+  "states": { "success": "#5ED3A0", "warning": "#F5C451", "danger": "#FF6B8A" },
+  "primary": "#E88FBF",
+  "background": "#07040A",
+  "fonts": { "display": "Cinzel", "accent": "Playfair Display Italic", "body": "Montserrat" }
+}

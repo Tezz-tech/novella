@@ -1,0 +1,65 @@
+/* Novelle Tech design tokens, sampled from the brand image */
+:root {
+  /* Ink (backgrounds) */
+  --ink-950: #07040a;
+  --ink-900: #0e0910;
+  --ink-800: #171018;
+  --ink-700: #241a24;
+
+  /* Rose (brand pink metal & satin) */
+  --rose-50: #fff0f6;
+  --rose-200: #fcd3e6;
+  --rose-300: #f5a8cc;
+  --rose-400: #e88fbf; /* primary */
+  --rose-500: #d884a8;
+  --rose-700: #902f54;
+  --rose-800: #601830;
+  --rose-900: #3a0c1f;
+
+  /* Accent & states */
+  --spark-400: #f5c451;
+  --success: #5ed3a0;
+  --warning: #f5c451;
+  --danger: #ff6b8a;
+
+  /* Semantic */
+  --bg: var(--ink-950);
+  --surface: var(--ink-800);
+  --border: var(--ink-700);
+  --text: var(--rose-50);
+  --text-muted: rgb(255 240 246 / 0.65);
+  --primary: var(--rose-400);
+  --primary-hover: var(--rose-500);
+
+  /* Gradients */
+  --grad-metal: linear-gradient(180deg, #fcd3e6 0%, #e88fbf 45%, #b55a86 70%, #f5a8cc 100%);
+  --grad-satin: linear-gradient(120deg, #3a0c1f 0%, #902f54 35%, #d884a8 60%, #902f54 100%);
+  --grad-glow: radial-gradient(circle at 50% 50%, rgb(232 143 191 / 0.35), transparent 65%);
+
+  /* Effects */
+  --glow-sm: 0 0 12px rgb(232 143 191 / 0.35);
+  --glow-md: 0 0 24px rgb(232 143 191 / 0.35), 0 0 64px rgb(232 143 191 / 0.15);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* Type */
+  --font-display: 'Cinzel', serif;
+  --font-accent: 'Playfair Display', serif;
+  --font-body: 'Montserrat', system-ui, sans-serif;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 200ms;
+  --dur-base: 400ms;
+  --dur-slow: 800ms;
+}
+
+.text-metal {
+  background: var(--grad-metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgb(232 143 191 / 0.35));
+}

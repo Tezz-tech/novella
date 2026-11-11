@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: #07040a; /* explicit, so the page never flashes white */
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  @media (min-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+  }
+
+  /* Brand focus ring for keyboard users, never removed. */
+  :focus-visible {
+    outline: 2px solid var(--rose-400);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  ::selection {
+    background: rgb(232 143 191 / 0.35);
+    color: var(--rose-50);
+  }
+}
+
+@layer components {
+  /* Background glow used behind hero-style blocks. */
+  .bg-glow-radial {
+    background-image: radial-gradient(circle at 50% 40%, rgb(232 143 191 / 0.22), transparent 60%);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 50;
+    border-radius: 9999px;
+    background: var(--rose-400);
+    color: var(--ink-950);
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: top 200ms var(--ease-out);
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+}
+
+/* Gentle entrance. Transform and opacity only, and off for reduced motion. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 0.8s var(--ease-out) both;
+}
+
+.rise-in-delay {
+  animation: rise-in 0.8s var(--ease-out) 0.15s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
