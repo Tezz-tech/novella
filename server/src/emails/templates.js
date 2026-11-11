@@ -115,3 +115,51 @@ export function adminNewOrderEmail({ order, money, stockIssues = [] }) {
     }),
   };
 }
+
+const STATUS_COPY = {
+  processing: {
+    title: 'We are preparing your order',
+    line: 'Your payment is confirmed and we are packing your order.',
+  },
+  shipped: { title: 'Your order is on its way', line: 'Your order has left our store.' },
+  delivered: {
+    title: 'Your order was delivered',
+    line: 'We hope you love it. Thank you for shopping with us.',
+  },
+  cancelled: {
+    title: 'Your order was cancelled',
+    line: 'Your order has been cancelled. If you were charged, we will refund it.',
+  },
+};
+
+/** Sent to the customer on each status change they should know about. */
+export function orderStatusEmail({
+  order,
+  status,
+  courier,
+  trackingNumber,
+  trackingUrl,
+  note,
+  money,
+}) {
+  const copy = STATUS_COPY[status] ?? {
+    title: `Order ${status}`,
+    line: 'Your order has been updated.',
+  };
+  const first = order.customer.name.split(' ')[0];
+  const tracking =
+    status === 'shipped' && (courier || trackingNumber || trackingUrl)
+      ? `<p>${courier ? `Courier: ${escape(courier)}<br />` : ''}${trackingNumber ? `Tracking number: ${escape(trackingNumber)}<br />` : ''}${trackingUrl ? `<a href="${escape(trackingUrl)}" style="color:#E88FBF;">Track your parcel</a>` : ''}</p>`
+      : '';
+  return {
+    subject: `${copy.title} · ${order.orderNumber}`,
+    text: `Hi ${first}, ${copy.line} Order ${order.orderNumber}.`,
+    html: layout({
+      title: copy.title,
+      preheader: copy.line,
+      body: `<p>Hi ${escape(first)},</p><p>${escape(copy.line)}</p>
+<p>Order <strong>${escape(order.orderNumber)}</strong> · Total ${money(order.total)}</p>
+${tracking}${note ? `<p style="color:rgba(255,240,246,0.7);">${escape(note)}</p>` : ''}`,
+    }),
+  };
+}

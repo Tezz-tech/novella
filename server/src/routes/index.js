@@ -7,6 +7,7 @@ import cartRoutes from './public/cart.routes.js';
 import newsletterRoutes from './public/newsletter.routes.js';
 import authRoutes from './auth.routes.js';
 import { ordersRoutes, paymentsRoutes } from './public/orders.routes.js';
+import adminRoutes from './admin.routes.js';
 import accountRoutes from './account.routes.js';
 
 /** All API routes, mounted under /api in app.js. Admin routers are added here in Phase 6. */
@@ -21,6 +22,7 @@ router.use('/newsletter', newsletterRoutes);
 router.use('/auth', authRoutes);
 router.use('/me', accountRoutes);
 router.use('/orders', ordersRoutes);
+router.use('/admin', adminRoutes);
 router.use('/payments', paymentsRoutes);
 
 export default router;

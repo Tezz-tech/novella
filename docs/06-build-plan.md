@@ -56,15 +56,15 @@ tick the checklist, then stop and report what to check.
 - [ ] Manual test with Paystack test card works end to end (needs your test keys)
 
 ## Phase 6 — Admin
-- [ ] Admin login, layout, role guards
-- [ ] Overview with charts and KPIs
-- [ ] Products list, inline edit, create/edit with variants, images, combos
-- [ ] Bulk price update with preview
-- [ ] Orders list + detail (address copy/maps, status flow, tracking, print slip)
-- [ ] Payments screen, re-verify, refunds, mark paid manually (owner)
-- [ ] Customers, categories/brands, delivery zones, coupons, homepage content,
+- [x] Admin login, layout, role guards
+- [x] Overview with charts and KPIs
+- [x] Products list, inline edit, create/edit with variants, images, combos
+- [x] Bulk price update with preview
+- [x] Orders list + detail (address copy/maps, status flow, tracking, print slip)
+- [x] Payments screen, re-verify, refunds, mark paid manually (owner)
+- [x] Customers, categories/brands, delivery zones, coupons, homepage content,
       settings, staff, activity log
-- [ ] New-order live toast
+- [x] New-order live toast
 
 ## Phase 7 — Polish & ship
 - [ ] Lighthouse mobile: performance ≥ 85, accessibility ≥ 95, SEO ≥ 95

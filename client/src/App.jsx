@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import SiteLayout from './components/layout/SiteLayout.jsx';
 
@@ -41,6 +41,8 @@ const ForgotPasswordPage = lazy(() =>
 const ResetPasswordPage = lazy(() =>
   import('./pages/auth/AuthPages.jsx').then((m) => ({ default: m.ResetPasswordPage }))
 );
+const AdminLogin = lazy(() => import('./admin/AdminLogin.jsx'));
+const AdminShell = lazy(() => import('./admin/AdminShell.jsx'));
 const Checkout = lazy(() => import('./pages/Checkout.jsx'));
 const OrderSuccess = lazy(() => import('./pages/OrderSuccess.jsx'));
 const Track = lazy(() => import('./pages/Track.jsx'));
@@ -50,6 +52,22 @@ const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 export default function App() {
   return (
     <Routes>
+      <Route
+        path="/admin/login"
+        element={
+          <Suspense fallback={null}>
+            <AdminLogin />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/admin/*"
+        element={
+          <Suspense fallback={<p className="p-10 text-rose-50/60">Loading admin…</p>}>
+            <AdminShell />
+          </Suspense>
+        }
+      />
       <Route element={<SiteLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<ShopPage />} />

@@ -130,3 +130,23 @@
     display: none;
   }
 }
+
+/* Print: the packing slip is the only thing that prints from the order page. */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  section[aria-label='Packing slip'],
+  section[aria-label='Packing slip'] * {
+    visibility: visible !important;
+  }
+  section[aria-label='Packing slip'] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: #000;
+    background: #fff;
+    padding: 24px;
+  }
+}

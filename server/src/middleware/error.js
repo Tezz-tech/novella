@@ -46,6 +46,10 @@ export function errorHandler(err, req, res, _next) {
     return res.status(400).json({ success: false, message: `Invalid ${err.path}` });
   }
 
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({ success: false, message: 'Image must be 5 MB or smaller' });
+  }
+
   const status = err.statusCode && err.statusCode >= 400 ? err.statusCode : 500;
   if (status === 500) logger.error(`${req.method} ${req.originalUrl}`, err);
 

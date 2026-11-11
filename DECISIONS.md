@@ -186,3 +186,35 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
   cannot open, the customer is sent to Paystack's hosted page.
 - **Not yet done:** a manual end-to-end payment with Paystack test keys and test cards. That needs your keys.
   The tests mock Paystack with nock.
+
+## Phase 6: admin
+
+- **Role matrix** is enforced on the server, not just hidden in the UI. Staff can view everything and edit
+  orders, products, stock and prices. Admin adds bulk prices, refunds, re-verify, coupons, delivery zones,
+  marketing, activity and subscribers. Owner adds store settings and staff. Every admin write is logged.
+- **Prices in the admin API are naira.** The admin form types naira, so the server converts to kobo at the
+  boundary (`nairaToKobo`). The public API stays in kobo. This is the one place money is in naira.
+- **Mark paid manually: not built.** It conflicts with CLAUDE.md non-negotiable 2 (paid only from Paystack
+  verify or a signed webhook). This needs your decision (see the open question at the top of this file).
+- **Inline quick edit** of price, compare-at, stock and active flag lives on the product form, per variant.
+  The product list does not expand rows inline, so this is a deliberate simplification.
+- **Bulk prices** always show a dry-run preview first, then apply. Rounding is to the nearest ₦100 or ₦1,000.
+  Prices never fall below zero. Compare-at prices that are not set are skipped.
+- **Products with orders are archived, not deleted,** so order history keeps its links.
+- **Refunds** go through Paystack. The Refund is `pending` until the webhook says it is processed or failed.
+  Restocking happens at the time of the refund request.
+- **Order cancellation** is allowed from unpaid, paid and processing. A paid order that is cancelled still
+  needs a separate refund. The owner decides whether to refund.
+- **Staff invites:** a random temporary password is emailed when SMTP is configured. It is also returned
+  once, to the owner who sent the invite, so they can pass it on when no email is set up. It is never logged.
+  A staff member cannot demote or disable their own account.
+- **Customers** are built from their orders, so guests show up too. "Registered" means an account exists with
+  the same email.
+- **Dashboard** KPIs compare with the previous period of the same length. The order count change is shown as 0
+  for now, since it has no previous-period comparison yet.
+- **Charts** use Recharts, as the admin spec asks.
+- **Catalogue routes** were checked and fixed (the first draft had built the path `/categorys`).
+- **Admin code is lazy-loaded** (its own chunk), so storefront visitors never download it.
+- **Tests:** 25 admin tests cover role gating, product creation and stock, combo stock refresh, bulk price
+  preview and apply, the order state machine, refunds through mocked Paystack, owner-only settings, staff
+  invites, and the activity log. Client: 17 tests, including the variant grid. Server total: 96.
