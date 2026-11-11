@@ -8,7 +8,8 @@
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
-    "seed": "node seed/run.js"
+    "seed": "node seed/run.js",
+    "seed:dummy": "node seed/dummy.js"
   },
   "engines": {
     "node": ">=20"
