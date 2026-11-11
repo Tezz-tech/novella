@@ -18,17 +18,6 @@ import './index.css';
 
 import App from './App.jsx';
 
-// Open the connection to the API early (saves a round trip on the first data request).
-try {
-  const apiOrigin = new URL(import.meta.env.VITE_API_URL || 'http://localhost:5000/api').origin;
-  const link = document.createElement('link');
-  link.rel = 'preconnect';
-  link.href = apiOrigin;
-  document.head.appendChild(link);
-} catch {
-  /* invalid URL in env: skip the hint */
-}
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { retry: 1, refetchOnWindowFocus: false, staleTime: 30_000 },

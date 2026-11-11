@@ -47,18 +47,18 @@ Change `SEED_ADMIN_PASSWORD` before you deploy, and use a real owner email.
 
 ### `server/.env`
 
-| Variable                                                               | Notes                                                                                  |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `PORT`                                                                 | API port, default 5000                                                                 |
-| `NODE_ENV`                                                             | `development`, `test` or `production`                                                  |
-| `MONGODB_URI`                                                          | Required. Atlas connection string or a local Mongo URL                                 |
-| `JWT_SECRET`                                                           | Required. At least 32 random characters                                                |
-| `JWT_EXPIRES_IN`                                                       | Session length, e.g. `7d`                                                              |
-| `CLIENT_URL`                                                           | Storefront origin. CORS and Paystack redirects use it. Example `http://localhost:5173` |
-| `CURRENCY`                                                             | `NGN`                                                                                  |
-| `PAYSTACK_SECRET_KEY`, `PAYSTACK_PUBLIC_KEY`                           | Test keys first (`sk_test_…`, `pk_test_…`)                                             |
-| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Needed for admin photo uploads                                                         |
-| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`                              | The owner account created by `npm run seed`                                            |
+| Variable                                                               | Notes                                                                                      |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `PORT`                                                                 | API port, default 5000                                                                     |
+| `NODE_ENV`                                                             | `development`, `test` or `production`                                                      |
+| `MONGODB_URI`                                                          | Required. Atlas connection string or a local Mongo URL                                     |
+| `JWT_SECRET`                                                           | Required. At least 32 random characters                                                    |
+| `JWT_EXPIRES_IN`                                                       | Session length, e.g. `7d`                                                                  |
+| `CLIENT_URL`                                                           | Storefront URL, used for links (Paystack return, sitemap). Example `http://localhost:5173` |
+| `CURRENCY`                                                             | `NGN`                                                                                      |
+| `PAYSTACK_SECRET_KEY`, `PAYSTACK_PUBLIC_KEY`                           | Test keys first (`sk_test_…`, `pk_test_…`)                                                 |
+| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Needed for admin photo uploads                                                             |
+| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`                              | The owner account created by `npm run seed`                                                |
 
 Missing optional keys never stop the server. It logs which integrations are not set up yet.
 
@@ -100,7 +100,7 @@ The repo deploys as two Vercel projects, both from this GitHub repo.
 **1. API project**
 
 - Root Directory: `server`. Framework: Other. Install and build settings come from `server/vercel.json`.
-- Environment variables: everything in `server/.env.example`. Set `CLIENT_URL` to the storefront URL,
+- Environment variables: everything in `server/.env.example`. Set `CLIENT_URL` to the storefront URL (used for links),
   and `CRON_SECRET` to a long random string.
 - Health check: `https://<api>.vercel.app/api/health`.
 - Paystack webhook URL: `https://<api>.vercel.app/api/payments/paystack/webhook`.

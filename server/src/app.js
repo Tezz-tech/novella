@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import apiRoutes from './routes/index.js';
 import seoRoutes from './routes/seo.routes.js';
 import { paystackWebhook } from './controllers/orders.controller.js';
-import { securityHeaders, corsPolicy, sanitize, apiLimiter } from './middleware/security.js';
+import { securityHeaders, sanitize, apiLimiter } from './middleware/security.js';
 import { errorHandler, notFound } from './middleware/error.js';
 
 export function createApp() {
@@ -13,7 +13,6 @@ export function createApp() {
   app.set('trust proxy', 1);
 
   app.use(securityHeaders);
-  app.use(corsPolicy);
   // Paystack webhook: raw bytes are needed for the signature, so this runs BEFORE express.json().
   app.post(
     '/api/payments/paystack/webhook',

@@ -1,18 +1,10 @@
 import helmet from 'helmet';
-import cors from 'cors';
 import mongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
-import { CLIENT_ORIGINS } from '../config/env.js';
 
 export const securityHeaders = helmet({
-  // The API is consumed from another origin (the storefront), so allow cross-origin reads.
-  crossOriginResourcePolicy: { policy: 'cross-origin' },
-});
-
-/** CORS is limited to CLIENT_URL, with credentials so httpOnly auth cookies work. */
-export const corsPolicy = cors({
-  origin: CLIENT_ORIGINS,
-  credentials: true,
+  // The storefront reaches the API through its own domain (same origin), so no cross-origin reads are needed.
+  crossOriginResourcePolicy: { policy: 'same-origin' },
 });
 
 /** Strips keys starting with `$` or containing `.` from body, params, query and headers. */

@@ -7,9 +7,12 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    // Same-origin in development too: /api goes to the local API.
+    proxy: { '/api': 'http://localhost:5000' },
   },
   preview: {
     port: 4173,
+    proxy: { '/api': 'http://localhost:5000' },
   },
   test: {
     environment: 'jsdom',

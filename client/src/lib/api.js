@@ -2,7 +2,8 @@
  * Thin fetch wrapper for the Novelle API. Sends the httpOnly auth cookie on every request.
  * Errors are thrown as ApiError with the server's message and field errors.
  */
-const BASE = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+// Relative by default: the storefront calls /api on its own domain and the host forwards it to the API.
+const BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
 
 export class ApiError extends Error {
   constructor(status, message, errors) {
@@ -14,7 +15,7 @@ export class ApiError extends Error {
 }
 
 export async function api(path, { method = 'GET', body, query, signal } = {}) {
-  const url = new URL(`${BASE}${path}`);
+  const url = new URL(`${BASE}${path}`, window.location.origin);
   if (query) {
     Object.entries(query).forEach(([k, v]) => {
       if (v !== undefined && v !== null && v !== '') url.searchParams.set(k, String(v));

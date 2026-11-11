@@ -296,3 +296,12 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
 - The hero is a five-slide carousel: the device photo plus four openly licensed images from Wikimedia
   Commons (CC BY, CC BY-SA and CC0). Attribution is in `client/public/brand/slides/CREDITS.txt`.
 - The carousel pauses on hover or focus and stops auto-advancing for reduced motion.
+
+## CORS removed: same-origin API
+
+- The API no longer sends CORS headers, and the `cors` package is removed.
+- The storefront calls `/api` on its own domain. Vercel forwards `/api/*` to the API project
+  (`client/vercel.json`). In development, Vite forwards `/api` to `localhost:5000`.
+- Because the browser only ever talks to one origin, the session cookie stays `SameSite=Lax`.
+- `CLIENT_URL` still holds the storefront URL, but only for links such as the Paystack return and the sitemap.
+- The forwarding rule in `client/vercel.json` names the API domain. Update it if the API is moved.
