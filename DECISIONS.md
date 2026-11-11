@@ -270,3 +270,10 @@ Items marked **OPEN** need the client's answer before the phase they belong to.
 - Still present: the storefront WhatsApp button and "chat on WhatsApp" links, which are in the spec.
 - **Open:** the forgot-password flow now creates a reset token but has no way to deliver it. It only logs the
   link in development. Choose one: an owner-assisted reset in the admin, or re-add a delivery channel.
+
+## Owner WhatsApp alert removed
+
+- The per-order WhatsApp alert to the owner is removed, together with the WhatsApp Cloud API service, its
+  templates doc, its env settings and its tests. The earlier WhatsApp sections above are superseded by this.
+- Kept: the storefront WhatsApp button and chat links, and `VITE_WHATSAPP_NUMBER`.
+- Still open: the forgot-password flow has no way to deliver its reset link.

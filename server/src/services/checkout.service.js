@@ -6,7 +6,6 @@ import { decrementVariant, refreshCombosContaining, refreshComboStock } from './
 import { HttpError } from '../utils/httpError.js';
 import { logger } from '../utils/logger.js';
 import { env } from '../config/env.js';
-import { notifyOwnerNewOrder } from './whatsapp.messages.js';
 import { formatNaira } from '../utils/money.js';
 
 const UNPAID_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -247,17 +246,6 @@ async function deductStock(order) {
   return issues;
 }
 
-async function notifyPaid(order, issues) {
-  // Only the owner is messaged automatically. Customers are not messaged.
-  const results = await Promise.allSettled([notifyOwnerNewOrder(order, issues)]);
-  for (const r of results) {
-    if (r.status === 'rejected')
-      logger.error('WhatsApp message failed for ' + order.orderNumber, r.reason);
-  }
-  if (issues.length)
-    logger.warn(`Stock issue on paid order ${order.orderNumber}: ${issues.join('; ')}`);
-}
-
 /**
  * The one place an order becomes paid (docs/04-paystack.md). Used by the verify endpoint, the
  * webhook, admin re-verify and the stale-order job. Idempotent: a second call changes nothing.
@@ -365,11 +353,8 @@ export async function confirmPayment(reference, source, { eventId = null } = {})
     await Coupon.updateOne({ code: claimed.coupon.code }, { $inc: { usedCount: 1 } });
 
   const finalOrder = await Order.findById(claimed._id).lean();
-  try {
-    await notifyPaid(finalOrder, issues);
-  } catch (err) {
-    logger.error(`Paid email failed for ${finalOrder.orderNumber}`, err);
-  }
+  if (issues.length)
+    logger.warn(`Stock issue on paid order ${finalOrder.orderNumber}: ${issues.join('; ')}`);
   return { order: finalOrder, status: 'paid' };
 }
 

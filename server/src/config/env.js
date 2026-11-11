@@ -29,12 +29,6 @@ const schema = z.object({
   CLOUDINARY_API_KEY: optionalString,
   CLOUDINARY_API_SECRET: optionalString,
 
-  WHATSAPP_PHONE_NUMBER_ID: optionalString,
-  WHATSAPP_ACCESS_TOKEN: optionalString,
-  WHATSAPP_API_VERSION: z.string().default('v21.0'),
-  WHATSAPP_TEMPLATE_LANG: z.string().default('en'),
-  OWNER_WHATSAPP_NUMBER: optionalString,
-
   SEED_ADMIN_EMAIL: optionalString,
   SEED_ADMIN_PASSWORD: optionalString,
 });
@@ -55,11 +49,6 @@ export const missingOptional = () => {
   const groups = {
     'Paystack (payments)': ['PAYSTACK_SECRET_KEY', 'PAYSTACK_PUBLIC_KEY'],
     'Cloudinary (images)': ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'],
-    'WhatsApp (order messages)': [
-      'WHATSAPP_PHONE_NUMBER_ID',
-      'WHATSAPP_ACCESS_TOKEN',
-      'OWNER_WHATSAPP_NUMBER',
-    ],
   };
   return Object.entries(groups)
     .filter(([, keys]) => keys.some((k) => !env[k]))
